@@ -3,7 +3,6 @@
     "name": "HabroSanitizer",
     "description": "This extension will remove authors from the Habr list",
     "version": "1.0",
-
     "permissions": [
         "activeTab",
         "storage"

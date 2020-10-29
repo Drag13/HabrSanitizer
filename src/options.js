@@ -33,6 +33,8 @@ import { DnD } from './dragAndDrop.js';
         throw new Error('No element with class .banBtn found, aborting');
     }
 
+    const storage = new Storage();
+
     $banList.addEventListener('click', (e) =>
         storage.removeFromBan(e.target.getAttribute('data-author-name'))
     );
@@ -40,7 +42,12 @@ import { DnD } from './dragAndDrop.js';
     $banBtn.addEventListener('click', () => {
         const $banInput = document.querySelector('#banname');
         const name = $banInput.value;
-        name && storage.addNewBan({ name, disabled: false });
+
+        if (name == null || name === '') {
+            return;
+        }
+
+        storage.addNewBan({ name, disabled: false });
         $banInput.value = null;
 
         if (name === 'drag13') {
@@ -49,8 +56,6 @@ import { DnD } from './dragAndDrop.js';
             );
         }
     });
-
-    const storage = new Storage();
 
     const $saveConfigBtn = document.getElementById('save-config');
 
