@@ -1,6 +1,8 @@
 # HabrSanitizer
 Home for the Chrome extension to sanitize Habr.com from graphomaniac authors
 
+No external code, no tracking, 100% open source
+
 ![example](https://raw.githubusercontent.com/Drag13/HabrSanitizer/master/docs/example.jpg)
 
 ## Install
@@ -18,8 +20,8 @@ To install the HabrSanitizer extension follow next steps:
 
 To make it work you need to set list of authors you want to ban:
 
-* Right click on the extension button and click on the Options menu
-* Use page to save your personal ban list
+* Right click on the extension button and click on the **Options** option
+* Use options page to save your personal ban list
 
 If you don't extension icon on the toolbar, you can go to the [chrome://extensions/](chrome://extensions/), click "detials" button and then click "Extension options".
 
@@ -28,3 +30,5 @@ If you don't extension icon on the toolbar, you can go to the [chrome://extensio
 Feel free to download your config or upload someon's config.
 
 Happy reading!
+
+With love by [Drag13](https://drag13.io)
