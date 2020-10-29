@@ -1,7 +1,7 @@
 (async function () {
     ('use strict');
 
-    const LOG = true;
+    const LOG = false;
 
     /**
      * Logs message to console if log flag is true
