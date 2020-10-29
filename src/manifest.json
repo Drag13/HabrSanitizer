@@ -1,0 +1,23 @@
+{
+    "manifest_version": 2,
+    "name": "HabroSanitizer",
+    "description": "This extension will remove authors from the Habr list",
+    "version": "1.0",
+
+    "permissions": [
+        "activeTab",
+        "storage",
+        "declarativeContent"
+    ],
+    "options_page": "options.html",
+    "content_scripts": [
+        {
+            "matches": [
+                "https://habr.com/*"
+            ],
+            "js": [
+                "sanitizer.js"
+            ]
+        }
+    ]
+}
