@@ -1,5 +1,7 @@
 # HabrSanitizer
-Home for the Chrome extension to sanitize Habr.com from trash authors
+Home for the Chrome extension to sanitize Habr.com from graphomaniac authors
+
+![example](https://raw.githubusercontent.com/Drag13/HabrSanitizer/master/docs/example.jpg)
 
 ## Install
 
