@@ -2,6 +2,7 @@
     ('use strict');
 
     const LOG = false;
+    const DEFAULT_SETTINGS = { banned: [], isPopularIgnored: false };
 
     /**
      * Logs message to console if log flag is true
@@ -21,15 +22,77 @@
     }
 
     /**
+     * Checks if article belongs to particular user
+     * @param {HTMLElement} article
+     * @returns {boolean}
+     */
+    function belongsToAuthor(article, authorName) {
+        return article == null
+            ? false
+            : equalsCaseInsensetive(article.querySelector(`.user-info__nickname`)?.textContent, authorName);
+    }
+
+    /**
+     * Checks if article belongs to particular blog
+     * @param {HTMLElement} article
+     * @returns {boolean}
+     */
+    function belongsToBlog(article, blogName) {
+        return article == null
+            ? false
+            : article.querySelector(`.post__title a`)?.href?.toLowerCase()?.includes(`/company/${blogName}`);
+    }
+
+    /**
      * Gets banned authors from the store
      */
-    async function getListOfBanned() {
+    async function getSettings() {
         return new Promise((resolve, _) => {
             chrome.storage.sync.get('settings', (data) => {
-                const banned = data && data.settings ? data.settings.banned || [] : [];
-                resolve(banned);
+                const settings = data && data.settings && data.settings.banned ? data.settings : DEFAULT_SETTINGS;
+                resolve(settings);
             });
         });
+    }
+
+    /**
+     * Removes links from reading now block
+     * @param {number[]} ids
+     */
+    function removeLinksFromReadingNow(ids) {
+        const [...list] = document.querySelectorAll('#neuro-habr .content-list__item');
+        const banned = list.filter((x) => {
+            const href = (x.querySelector('.post-info__title')?.href ?? '').toLowerCase();
+            const containsBannedId = ids.some((id) => href.includes(`post/${id}`));
+            return containsBannedId;
+        });
+
+        banned.forEach((x) => (x.innerHTML = `<!-- removed-->`));
+    }
+
+    /**
+     * Extracts article id from href
+     * @param {string} href
+     * @returns number
+     */
+    function extractArticleId(href) {
+        if (href == null) {
+            return NaN;
+        }
+
+        const trimmed = href.endsWith('/') ? href.slice(0, -1) : href;
+        return trimmed.split('/').pop();
+    }
+
+    /**
+     * Gets id of the banned articles
+     * @param {HTMLElement[]} articles
+     * @param {string[]} banned list of banned authors/blogs
+     */
+    function getIdForBannedArticles(articles, banned) {
+        return articles
+            .filter((article) => banned.some((name) => belongsToAuthor(article, name) || belongsToBlog(article, name)))
+            .map((article) => extractArticleId(article.querySelector('.post__title a')?.href));
     }
 
     /**
@@ -37,62 +100,33 @@
      * @param {string} author
      * @param {HTMLElement[]} articles
      */
-    function removeArticle(author, articles, searchFunctions) {
+    function removeArticle(author, articles) {
         const searchTerm = (author ?? '').toString().toLowerCase();
 
-        const articlesFromAuthour = searchFunctions
-            .map((findArticle) => findArticle(searchTerm, articles))
-            .flat();
-
-        articlesFromAuthour.forEach(
-            (article) => (article.innerHTML = `<!--${searchTerm} removed-->`)
-        );
-    }
-
-    /**
-     * Searches using author name
-     * @param {string} authorName Author name
-     * @param {HTMLElement[]} allArticles list of all articles on the page
-     */
-    function searchByAuthorName(authorName, allArticles) {
-        const articles = allArticles.filter((article) =>
-            equalsCaseInsensetive(
-                article.querySelector(`.user-info__nickname`)?.textContent,
-                authorName
-            )
+        const articlesToBeDeleted = articles.filter(
+            (article) => belongsToAuthor(article, searchTerm) || belongsToBlog(article, searchTerm)
         );
 
-        log(`Found ${articles.length} articles from author ${authorName}`);
+        log(`Found ${articlesToBeDeleted.length} articles to ban`);
 
-        return articles;
+        articlesToBeDeleted.forEach((article) => (article.innerHTML = `<!--${searchTerm} removed-->`));
     }
 
-    /**
-     * Searches using author name
-     * @param {string} blogName Blog name
-     * @param {HTMLElement[]} allArticles list of all articles on the page
-     */
-    function searchByBlogName(blogName, allArticles) {
-        const articles = allArticles.filter((article) =>
-            article
-                .querySelector(`.post__title a`)
-                ?.href.toLowerCase()
-                ?.includes(`/company/${blogName}`)
-        );
-
-        log(`Found ${articles.length} articles from blog ${blogName}`);
-
-        return articles;
-    }
-
-    const banned = await getListOfBanned();
+    const settings = await getSettings();
+    const banned = settings.banned.map(({ name }) => name);
+    const isReadingNowBlockOff = settings.isPopularIgnored;
 
     log(`Found list of banned users: ${banned.map((x) => x.name).join(',')} `);
+
     const [...allArticles] = document.querySelectorAll('article:not(.post_full)');
 
-    banned.forEach(({ name }) =>
-        removeArticle(name, allArticles, [searchByAuthorName, searchByBlogName])
-    );
+    if (isReadingNowBlockOff) {
+        const listOfBannedId = getIdForBannedArticles(allArticles, banned);
+        console.log(`Found ids for ban: "${listOfBannedId.join(',')}"`);
+        removeLinksFromReadingNow(listOfBannedId);
+    }
+
+    banned.forEach((name) => removeArticle(name, allArticles));
 
     log(`Sanitization done`);
 })();

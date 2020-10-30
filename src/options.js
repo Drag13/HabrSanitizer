@@ -13,6 +13,7 @@ import { DnD } from './dragAndDrop.js';
                 ({ name }) =>
                     `<li class="grid"> <span class="lbl">${name}</span> <span></span><button class="btn" data-author-name="${name}">Remove</button></li>`
             )
+            .reverse()
             .join('');
     }
 
@@ -44,9 +45,7 @@ import { DnD } from './dragAndDrop.js';
             $banInput.value = null;
 
             if (name === 'drag13') {
-                alert(
-                    'You just banned an author of this extension, the life will be never be the same'
-                );
+                alert('You just banned an author of this extension, the life will be never be the same');
             }
         });
     }
@@ -60,9 +59,7 @@ import { DnD } from './dragAndDrop.js';
             throw new Error('No element with class ban-list found, aborting');
         }
 
-        $banList.addEventListener('click', (e) =>
-            store.removeFromBan(e.target.getAttribute('data-author-name'))
-        );
+        $banList.addEventListener('click', (e) => store.removeFromBan(e.target.getAttribute('data-author-name')));
     }
 
     /**
@@ -84,6 +81,25 @@ import { DnD } from './dragAndDrop.js';
     /**
      * @param {Storage} store
      */
+    function initIgnoreReadingNowBlock(initialValue, store) {
+        const $exlcudePopularBlock = document.getElementById('exlcude-pop-block');
+
+        if ($exlcudePopularBlock == null) {
+            throw new Error('No element with id exlcude-pop-block found, aborting');
+        }
+
+        console.log(initialValue);
+
+        $exlcudePopularBlock.checked = !!initialValue;
+
+        $exlcudePopularBlock.addEventListener('change', async (e) => {
+            store.setIgnorePopularFlag(!!e.target.checked);
+        });
+    }
+
+    /**
+     * @param {Storage} store
+     */
     function initDnD(store) {
         const dnd = new DnD('#drop-area');
         dnd.onFileDropped((settings) => store.applySettings(settings));
@@ -97,6 +113,7 @@ import { DnD } from './dragAndDrop.js';
     initBanList(storage);
     initDnD(storage);
     initSaveConfigBtn(storage);
+    initIgnoreReadingNowBlock(settings.isPopularIgnored, storage);
 
     updateBanList(settings.banned);
 

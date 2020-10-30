@@ -52,12 +52,21 @@
             padding-top: 2em;
         }
 
-        #drop-area {
-            height: 200px;
+        .drop-area {
+            height: 150px;
             border: 2px dashed gray;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .align-right {
+            text-align: right;
+        }
+
+        .notice {
+            border: 1px solid #eeb30b;
+            margin-bottom: 1rem;
         }
     </style>
 </head>
@@ -65,28 +74,39 @@
 <body>
 
     <main>
-        <h1>Ban list for <a href="https://habr.com">Habrahabr</a></h1>
-        <div class="section grid">
+        <h1> <img src="./asset/i16.png" alt="logo"> Ban list for <a href="https://habr.com">Habrahabr</a></h1>
+        <section class="section notice" id="notice">
+            From the author: please consider, that Habr exists because your visits. Don't use it for evil.
+        </section>
+
+        <section class="section grid">
             <label class="lbl" for="add">New ban:</label>
             <input type="text" name="add" id="banname" /> <button class="btn" id="banBtn">Ban!</button>
-        </div>
+        </section>
 
         <h2>Already banned:</h2>
 
-        <div class="section">
+        <section class="section">
             <ul class="ban-list"></ul>
-        </div>
+        </section>
 
         <h2>Config</h2>
 
-        <div class="section">
-            <div id="drop-area">Upload settings</div>
-        </div>
+        <section class="section grid">
+            <label class="lbl" for="exlcude-pop-block">Exclude from "POPULAR RIGHT NOW"</label>
+            <span></span>
+            <div class="align-right">
+                <input type="checkbox" name="exlcude-pop-block" id="exlcude-pop-block">
+            </div>
+        </section>
 
+        <section class="section">
+            <div class="drop-area" id="drop-area">Upload settings</div>
+        </section>
 
-        <div class="section">
+        <section class="section">
             <button class="btn full-width" id="save-config">Download json</button>
-        </div>
+        </section>
 
     </main>
 

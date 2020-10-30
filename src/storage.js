@@ -11,7 +11,7 @@ export class Storage {
             throw new Error('Settings formatted incorrectly');
         }
         this._saveSettings(settings);
-        this._invoke(settings);
+        this._notify(settings);
     }
 
     /**
@@ -32,7 +32,7 @@ export class Storage {
 
         settings.banned.push(author);
         await this._saveSettings(settings);
-        this._invoke(settings);
+        this._notify(settings);
     }
 
     /**
@@ -48,17 +48,26 @@ export class Storage {
         settings.banned = settings.banned.filter((author) => !this._eq(author.name, userName));
 
         await this._saveSettings(settings);
-        this._invoke(settings);
+        this._notify(settings);
     }
 
     /**
-     * @returns {Promise<{banned:[]>}
+     * Saves flag to ignore/show banned posts from ignored authors
+     * @param {boolean} isIgnored Ignore popular section
+     */
+    async setIgnorePopularFlag(isIgnored) {
+        const settings = await this._loadSettings();
+        settings.isPopularIgnored = isIgnored;
+        await this._saveSettings(settings);
+        this._notify(settings);
+    }
+
+    /**
+     * @returns {Promise<{banned:[], isPopularIgnored:boolean>}
      */
     async _loadSettings() {
         return new Promise((res, _) => {
-            chrome.storage.sync.get('settings', (data) =>
-                res(data && data.settings ? data.settings : { banned: [] })
-            );
+            chrome.storage.sync.get('settings', (data) => res(data && data.settings ? data.settings : { banned: [] }));
         });
     }
 
@@ -76,7 +85,7 @@ export class Storage {
         this._handler = handler;
     }
 
-    _invoke = (settings) => {
+    _notify = (settings) => {
         typeof this._handler === 'function' && this._handler(settings);
     };
 
