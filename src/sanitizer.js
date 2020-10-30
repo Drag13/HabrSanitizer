@@ -35,39 +35,64 @@
     /**
      * Removes article from regular list by author name
      * @param {string} author
+     * @param {HTMLElement[]} articles
      */
-    function removeArticle(author, searchFunctions) {
-        const articlesFromAuthour = searchFunctions.map((getArticle) => getArticle(author)).flat();
+    function removeArticle(author, articles, searchFunctions) {
+        const searchTerm = (author ?? '').toString().toLowerCase();
 
-        articlesFromAuthour.forEach((article) => (article.innerHTML = `<!--Removed -->`));
+        const articlesFromAuthour = searchFunctions
+            .map((findArticle) => findArticle(searchTerm, articles))
+            .flat();
+
+        articlesFromAuthour.forEach(
+            (article) => (article.innerHTML = `<!--${searchTerm} removed-->`)
+        );
     }
 
     /**
      * Searches using author name
-     * @param {string} author Author name
+     * @param {string} authorName Author name
+     * @param {HTMLElement[]} allArticles list of all articles on the page
      */
-    function searchByAuthorName(author) {
-        const [...allArticles] = document.getElementsByTagName('article');
-
-        log(`Found ${allArticles.length} articles`);
-
-        const articlesFromAuthour = allArticles.filter((article) =>
+    function searchByAuthorName(authorName, allArticles) {
+        const articles = allArticles.filter((article) =>
             equalsCaseInsensetive(
                 article.querySelector(`.user-info__nickname`)?.textContent,
-                author
+                authorName
             )
         );
 
-        log(`Found ${articlesFromAuthour.length} articles from author ${author}`);
+        log(`Found ${articles.length} articles from author ${authorName}`);
 
-        return articlesFromAuthour;
+        return articles;
+    }
+
+    /**
+     * Searches using author name
+     * @param {string} blogName Blog name
+     * @param {HTMLElement[]} allArticles list of all articles on the page
+     */
+    function searchByBlogName(blogName, allArticles) {
+        const articles = allArticles.filter((article) =>
+            article
+                .querySelector(`.post__title a`)
+                ?.href.toLowerCase()
+                ?.includes(`/company/${blogName}`)
+        );
+
+        log(`Found ${articles.length} articles from blog ${blogName}`);
+
+        return articles;
     }
 
     const banned = await getListOfBanned();
 
     log(`Found list of banned users: ${banned.map((x) => x.name).join(',')} `);
+    const [...allArticles] = document.querySelectorAll('article:not(.post_full)');
 
-    banned.forEach(({ name }) => removeArticle(name, [searchByAuthorName]));
+    banned.forEach(({ name }) =>
+        removeArticle(name, allArticles, [searchByAuthorName, searchByBlogName])
+    );
 
     log(`Sanitization done`);
 })();

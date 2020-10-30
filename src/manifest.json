@@ -1,21 +1,20 @@
 {
     "manifest_version": 2,
+    "author":"drag13",
     "name": "HabroSanitizer",
-    "description": "This extension will remove authors from the Habr list",
-    "version": "1.0",
-    "permissions": [
-        "activeTab",
-        "storage"
-    ],
+    "description": "This extension removes posts from certain authors on the Habr.com",
+    "version": "1.1",
+    "permissions": ["storage"],
+    "icons": {
+        "16": "./asset/i16.png",
+        "48": "./asset/i48.png",
+        "128": "./asset/i128.png"
+    },
     "options_page": "options.html",
     "content_scripts": [
         {
-            "matches": [
-                "https://habr.com/*"
-            ],
-            "js": [
-                "sanitizer.js"
-            ]
+            "matches": ["https://habr.com/*"],
+            "js": ["sanitizer.js"]
         }
     ]
 }

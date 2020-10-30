@@ -22,54 +22,83 @@ import { DnD } from './dragAndDrop.js';
         $bans.innerHTML = banList;
     }
 
-    const $banList = document.querySelector('.ban-list');
-    const $banBtn = document.querySelector('#banBtn');
+    /**
+     * @param {Storage} store
+     */
+    function initBanBtn(store) {
+        const $banBtn = document.querySelector('#banBtn');
 
-    if ($banList == null) {
-        throw new Error('No element with class ban-list found, aborting');
+        if ($banBtn == null) {
+            throw new Error('No element with class .banBtn found, aborting');
+        }
+
+        $banBtn.addEventListener('click', () => {
+            const $banInput = document.querySelector('#banname');
+            const name = $banInput.value;
+
+            if (name == null || name === '') {
+                return;
+            }
+
+            store.addNewBan({ name, disabled: false });
+            $banInput.value = null;
+
+            if (name === 'drag13') {
+                alert(
+                    'You just banned an author of this extension, the life will be never be the same'
+                );
+            }
+        });
     }
 
-    if ($banBtn == null) {
-        throw new Error('No element with class .banBtn found, aborting');
+    /**
+     * @param {Storage} store
+     */
+    function initBanList(store) {
+        const $banList = document.querySelector('.ban-list');
+        if ($banList == null) {
+            throw new Error('No element with class ban-list found, aborting');
+        }
+
+        $banList.addEventListener('click', (e) =>
+            store.removeFromBan(e.target.getAttribute('data-author-name'))
+        );
+    }
+
+    /**
+     * @param {Storage} store
+     */
+    function initSaveConfigBtn(store) {
+        const $saveConfigBtn = document.getElementById('save-config');
+
+        if ($saveConfigBtn == null) {
+            throw new Error('No element with id save-config found, aborting');
+        }
+
+        $saveConfigBtn.addEventListener('click', async () => {
+            const settings = await store.getSettings();
+            saveToFile(settings, 'habrasnitizer.json');
+        });
+    }
+
+    /**
+     * @param {Storage} store
+     */
+    function initDnD(store) {
+        const dnd = new DnD('#drop-area');
+        dnd.onFileDropped((settings) => store.applySettings(settings));
     }
 
     const storage = new Storage();
 
-    $banList.addEventListener('click', (e) =>
-        storage.removeFromBan(e.target.getAttribute('data-author-name'))
-    );
-
-    $banBtn.addEventListener('click', () => {
-        const $banInput = document.querySelector('#banname');
-        const name = $banInput.value;
-
-        if (name == null || name === '') {
-            return;
-        }
-
-        storage.addNewBan({ name, disabled: false });
-        $banInput.value = null;
-
-        if (name === 'drag13') {
-            alert(
-                'You just banned an author of this extension, the life will be never be the same'
-            );
-        }
-    });
-
-    const $saveConfigBtn = document.getElementById('save-config');
-
-    $saveConfigBtn.addEventListener('click', async () => {
-        const settings = await storage.getSettings();
-        saveToFile(settings, 'habrasnitizer.json');
-    });
-
     const settings = await storage.getSettings();
+
+    initBanBtn(storage);
+    initBanList(storage);
+    initDnD(storage);
+    initSaveConfigBtn(storage);
 
     updateBanList(settings.banned);
 
     storage.onChange((x) => updateBanList(x.banned));
-
-    const dnd = new DnD('#drop-area');
-    dnd.onFileDropped((settings) => storage.applySettings(settings));
 })();
