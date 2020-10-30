@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "author":"drag13",
     "name": "HabroSanitizer",
-    "description": "This extension removes posts from certain authors on the Habr.com",
+    "description": "This extension removes posts from chosen authors on the Habr.com. Completely free, no ads, no telemetry",
     "version": "1.1",
     "permissions": ["storage"],
     "icons": {
