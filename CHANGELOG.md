@@ -1,5 +1,12 @@
 # HabroSanitizer
 
+## [11.01.2020] V.1.1.1
+
+### Bugs
+
+* Fixed bug when articles were removed from the personal page
+* Fixed bug with incorrect logging
+
 ## [10.30.2020] V.1.1
 
 ### Bugs

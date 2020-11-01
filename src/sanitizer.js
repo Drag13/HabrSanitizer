@@ -8,8 +8,8 @@
      * Logs message to console if log flag is true
      * @param {string} message Message to log
      */
-    function log(message) {
-        LOG && console.log(message);
+    function log(...message) {
+        LOG && console.log(...message);
     }
 
     /**
@@ -84,6 +84,13 @@
         return trimmed.split('/').pop();
     }
 
+    function onPersonalPage(name) {
+        const location = window.location.href.toLowerCase();
+        const isOnAuthorPage = location.includes(`/users/${name}/posts`);
+        const isOnBlogPage = location.includes(`/company/${name}/blog`);
+        return isOnAuthorPage || isOnBlogPage;
+    }
+
     /**
      * Gets id of the banned articles
      * @param {HTMLElement[]} articles
@@ -103,11 +110,18 @@
     function removeArticle(author, articles) {
         const searchTerm = (author ?? '').toString().toLowerCase();
 
+        const isOnPersonalPage = onPersonalPage(author);
+
+        if (isOnPersonalPage) {
+            log(`We are on the ${searchTerm} personal page, skipping`);
+            return;
+        }
+
         const articlesToBeDeleted = articles.filter(
             (article) => belongsToAuthor(article, searchTerm) || belongsToBlog(article, searchTerm)
         );
 
-        log(`Found ${articlesToBeDeleted.length} articles to ban`);
+        log(`Found ${articlesToBeDeleted.length} articles to ban from ${searchTerm}`);
 
         articlesToBeDeleted.forEach((article) => (article.innerHTML = `<!--${searchTerm} removed-->`));
     }
@@ -116,7 +130,7 @@
     const banned = settings.banned.map(({ name }) => name);
     const isReadingNowBlockOff = settings.isPopularIgnored;
 
-    log(`Found list of banned users: ${banned.map((x) => x.name).join(',')} `);
+    log(`Found list of banned users: ${banned.join(',')} `);
 
     const [...allArticles] = document.querySelectorAll('article:not(.post_full)');
 
