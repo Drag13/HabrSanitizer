@@ -11,7 +11,7 @@ import { DnD } from './dragAndDrop.js';
         return banned
             .map(
                 ({ name }) =>
-                    `<li class="grid"> <span class="lbl">${name}</span> <span></span><button class="btn" data-author-name="${name}">Remove</button></li>`
+                    `<li class="grid two-columns"> <span class="lbl">${name}</span><button class="btn" data-author-name="${name}">Remove</button></li>`
             )
             .reverse()
             .join('');
