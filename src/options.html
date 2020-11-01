@@ -26,14 +26,48 @@
             margin-left: auto;
             padding-top: 1em;
             padding-bottom: 1em;
-            padding-left: 1em;
             flex: 1;
+        }
+
+        .content {
+            padding: 0 1em;
+        }
+
+        .notice {
+            border: 1px solid #eeb30b;
         }
 
         .ban-list {
             list-style: none;
             text-align: left;
             padding-left: 0;
+        }
+
+        .ban-list>li {
+            padding-top: 2em;
+        }
+
+        .section {
+            padding: 1em;
+        }
+
+        .drop-area {
+            height: 150px;
+            border: 2px dashed gray;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer {
+            text-align: center;
+            background-color: #375e97;
+            padding: 1em;
+            color: white;
+        }
+
+        .footer a {
+            color: white;
         }
 
         .btn {
@@ -48,10 +82,6 @@
             background-color: rgb(221 221 221);
         }
 
-        .full-width {
-            width: 100%;
-        }
-
         .grid {
             display: grid;
             grid-column-gap: 8px;
@@ -62,31 +92,7 @@
         }
 
         .two-columns {
-            grid-template-columns: 66.66% 33.33%;
-        }
-
-        .section {
-            padding: 1em;
-        }
-
-        .ban-list>li {
-            padding-top: 2em;
-        }
-
-        .drop-area {
-            height: 150px;
-            border: 2px dashed gray;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .align-right {
-            text-align: right;
-        }
-
-        .notice {
-            border: 1px solid #eeb30b;
+            grid-template-columns: 50.0% 50.0%;
         }
 
         .icon {
@@ -95,15 +101,12 @@
             line-height: 0;
         }
 
-        .footer {
-            text-align: center;
-            background-color: #375e97;
-            padding: 1em;
-            color: white;
+        .align-right {
+            text-align: right;
         }
 
-        .footer a {
-            color: white;
+        .full-width {
+            width: 100%;
         }
     </style>
 </head>
@@ -111,41 +114,42 @@
 <body>
 
     <main class="main">
+        <div class="content">
+            <section class="section notice" id="notice">
+                From the author: please consider, that Habr exists because your visits. Don't use it for evil.
+            </section>
 
-        <section class="section notice" id="notice">
-            From the author: please consider, that Habr exists because your visits. Don't use it for evil.
-        </section>
+            <h1> <img src="./asset/i16.png" alt="logo"> Ban list for <a href="https://habr.com">Habrahabr</a></h1>
 
-        <h1> <img src="./asset/i16.png" alt="logo"> Ban list for <a href="https://habr.com">Habrahabr</a></h1>
+            <section class="section grid three-columns">
+                <label class="lbl" for="add">New ban:</label>
+                <input type="text" name="add" id="banname" />
+                <button class="btn" id="banBtn">Ban!</button>
+            </section>
 
-        <section class="section grid three-columns">
-            <label class="lbl" for="add">New ban:</label>
-            <input type="text" name="add" id="banname" />
-            <button class="btn" id="banBtn">Ban!</button>
-        </section>
+            <h2>Already banned:</h2>
 
-        <h2>Already banned:</h2>
+            <section class="section">
+                <ul class="ban-list"></ul>
+            </section>
 
-        <section class="section">
-            <ul class="ban-list"></ul>
-        </section>
+            <h2>Config</h2>
 
-        <h2>Config</h2>
+            <section class="section grid two-columns">
+                <label class="lbl" for="exlcude-pop-block">Exclude from "POPULAR RIGHT NOW"</label>
+                <div class="align-right">
+                    <input type="checkbox" name="exlcude-pop-block" id="exlcude-pop-block">
+                </div>
+            </section>
 
-        <section class="section grid two-columns">
-            <label class="lbl" for="exlcude-pop-block">Exclude from "POPULAR RIGHT NOW"</label>
-            <div class="align-right">
-                <input type="checkbox" name="exlcude-pop-block" id="exlcude-pop-block">
-            </div>
-        </section>
+            <section class="section">
+                <div class="drop-area" id="drop-area">Drop settings</div>
+            </section>
 
-        <section class="section">
-            <div class="drop-area" id="drop-area">Drop settings</div>
-        </section>
-
-        <section class="section">
-            <button class="btn full-width" id="save-config">Download json</button>
-        </section>
+            <section class="section">
+                <button class="btn full-width" id="save-config">Download json</button>
+            </section>
+        </div>
 
     </main>
 
