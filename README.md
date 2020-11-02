@@ -15,7 +15,7 @@ To install the HabrSanitizer extension follow next steps:
 * Enable developer mode toggle on the top-right corner
 * Click Load unpacked on the top-left corner and select SRC folder from the repo
 
-**You are done!**
+**That's all!**
 
 ## Setup
 
