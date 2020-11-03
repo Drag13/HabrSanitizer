@@ -8,7 +8,9 @@ No external code, no tracking, 100% open source
 
 ## Install
 
-To install the HabrSanitizer extension follow next steps:
+To install the HabrSanitizer extension follow next steps use this link - [link to the chrome extension store](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc)
+
+Or, follow next steps to be 100% sure that everything is safe:
 
 * Clone https://github.com/Drag13/HabrSanitizer
 * Open [chrome://extensions/](chrome://extensions/) tab
