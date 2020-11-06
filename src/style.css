@@ -386,5 +386,8 @@ body {
 .footer .content .icon {
   margin-left: 1em;
 }
+.footer .content .gap {
+  width: 2em;
+}
 
 /*# sourceMappingURL=style.css.map */
