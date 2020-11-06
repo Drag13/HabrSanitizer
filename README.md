@@ -1,8 +1,6 @@
-# HabrSanitizer
+# [HabrSanitizer](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc)
 
-Home for the Chrome extension to sanitize Habr.com from graphomaniac authors
-
-No external code, no tracking, 100% open source
+Home for the Chrome extension to sanitize Habr.com from graphomaniac authors. No external code, no tracking, 100% open source. [Free on Chrome Web Store](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc)
 
 ![example](https://raw.githubusercontent.com/Drag13/HabrSanitizer/master/docs/example.jpg)
 
