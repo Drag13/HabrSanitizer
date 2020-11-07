@@ -1,5 +1,6 @@
 @import './btn.css';
 @import './input.css';
+@import './footer.css';
 
 :root {
     --darkest-base: 32, 33, 36;
@@ -156,25 +157,3 @@ body {
     align-items: center;
 }
 
-.footer {
-    font-size: 1em;
-    color: var(--light);
-}
-
-.footer .content {
-    background-color: var(--dark);
-    max-width: var(--max-width);
-    padding: 2em;
-    margin: auto;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-}
-
-.footer .icon {
-    margin-left: 1em;
-}
-.footer .author-container a {
-    color: var(--lighter);
-    text-decoration: none;
-}
