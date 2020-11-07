@@ -27,12 +27,14 @@ export class Storage {
         const exists = !!settings.banned.find((x) => this._eq(x.name, author.name));
 
         if (exists) {
-            return;
+            return false;
         }
 
         settings.banned.push(author);
         await this._saveSettings(settings);
         this._notify(settings);
+
+        return true;
     }
 
     /**

@@ -1,0 +1,20 @@
+input[type='text'] {
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1.8em;
+    font-family: 'Courier New', Courier, monospace;
+    line-height: 1em;
+    padding: 0.2em 0.4em;
+    border: 1px solid var(--darkest);
+    color: var(--input-color);
+    background-color: var(--darkest);
+}
+
+input[type='text']:focus {
+    border: 1px solid var(--focus-color);
+    outline: none 0 !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
