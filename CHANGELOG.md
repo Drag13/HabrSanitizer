@@ -4,7 +4,7 @@
 
 ### Breaking Change
 
-* Removed possibility to sanitize block from READING NOW block, see #6
+* Removed possibility to sanitize block from READING NOW block, see [the issue](https://github.com/Drag13/HabrSanitizer/issues/6)
 
 ### Improvments
 
