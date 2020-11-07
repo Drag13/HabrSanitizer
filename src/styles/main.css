@@ -18,6 +18,12 @@
     --button-text: var(--primary-color);
 }
 
+@media only screen and (max-width: 1600px) {
+    :root {
+        --max-width: 800px;
+    }
+}
+
 html,
 body {
     margin: 0;
