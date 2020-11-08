@@ -1,5 +1,20 @@
 # HabroSanitizer
 
+## [11.07.2020] V.2.0.0
+
+### Breaking Change
+
+* Removed possibility to sanitize block from READING NOW block, see [the issue](https://github.com/Drag13/HabrSanitizer/issues/6)
+
+### Improvments
+
+* New design
+
+### Bugs
+
+* Fixed bug adding non-trimmed names
+* Fixed bug with losing focus when author not added due to duplication
+
 ## [11.01.2020] V.1.1.1
 
 ### Bugs
@@ -11,7 +26,7 @@
 
 ### Bugs
 
-* Fixed bug with removing directly opened article. Content will be visible for now even if author/blog is banned
+* Fixed bug with removing directly opened article. Content will be visible for now even if the author/blog is banned
 
 ### Features
 
@@ -22,4 +37,4 @@
 
 * Added new icon for the extension: !['Deepest thanks to the community'](./src/asset/i19.png). Deepest thanks to the anonymous author.
 * Ban list re-ordered from new to old entries
-* Removed unnecessary permission for accessing the activeTab
+* Removed unnecessary permission for accessing the active tab

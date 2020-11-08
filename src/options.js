@@ -11,7 +11,22 @@ import { DnD } from './dragAndDrop.js';
         return banned
             .map(
                 ({ name }) =>
-                    `<li class="grid two-columns"> <span class="lbl">${name}</span><button class="btn" data-author-name="${name}">Remove</button></li>`
+                    `<li>
+                    <span class="lbl">${name}</span>
+                    <button class="btn round" data-author-name="${name}">
+                    <svg width="20px"
+                         height="20px"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2px"
+                         stroke-linecap="round"
+                         stroke-linejoin="round"
+                         data-author-name="${name}"
+                    >
+                        <use xlink:href="./asset/sprites.svg#minus"/>
+                    </svg>
+                    </button>
+                    </li>`
             )
             .reverse()
             .join('');
@@ -33,16 +48,17 @@ import { DnD } from './dragAndDrop.js';
             throw new Error('No element with class .banBtn found, aborting');
         }
 
-        $banBtn.addEventListener('click', () => {
+        $banBtn.addEventListener('click', async () => {
+            document.activeElement.blur();
             const $banInput = document.querySelector('#banname');
-            const name = $banInput.value;
-
+            const rawName = $banInput.value;
+            const name = rawName != null ? rawName.trim().toLowerCase() : null;
             if (name == null || name === '') {
                 return;
             }
 
-            store.addNewBan({ name, disabled: false });
-            $banInput.value = null;
+            const isAdded = await store.addNewBan({ name, disabled: false });
+            isAdded && ($banInput.value = null);
 
             if (name === 'drag13') {
                 alert('You just banned an author of this extension, the life will be never be the same');
@@ -58,7 +74,6 @@ import { DnD } from './dragAndDrop.js';
         if ($banList == null) {
             throw new Error('No element with class ban-list found, aborting');
         }
-
         $banList.addEventListener('click', (e) => store.removeFromBan(e.target.getAttribute('data-author-name')));
     }
 
@@ -88,8 +103,6 @@ import { DnD } from './dragAndDrop.js';
             throw new Error('No element with id exlcude-pop-block found, aborting');
         }
 
-        console.log(initialValue);
-
         $exlcudePopularBlock.checked = !!initialValue;
 
         $exlcudePopularBlock.addEventListener('change', async (e) => {
@@ -113,7 +126,7 @@ import { DnD } from './dragAndDrop.js';
     initBanList(storage);
     initDnD(storage);
     initSaveConfigBtn(storage);
-    initIgnoreReadingNowBlock(settings.isPopularIgnored, storage);
+    // initIgnoreReadingNowBlock(settings.isPopularIgnored, storage);
 
     updateBanList(settings.banned);
 

@@ -1,0 +1,66 @@
+.btn {
+    cursor: pointer;
+    outline: none;
+    border: 1px solid var(--button-border);
+    background-color: var(--button-color);
+    box-shadow: none;
+    transition: background-color 0.2s ease-in-out;
+    height: var(--input-height);
+    width: var(--input-height);
+    line-height: 1em;
+    font-size: calc(var(--input-size, 2em) * 0.66);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.btn svg {
+    color: var(--button-text);
+}
+
+.btn:hover {
+    background-color: hsla(var(--primary-color-base), 90%, 0.1);
+}
+
+.btn:focus {
+    border: 1px solid var(--primary-color);
+}
+
+.btn:active {
+    background-color: var(--primary-color);
+}
+
+.btn:active svg {
+    color: var(--darkest);
+}
+
+.btn.round {
+    border-radius: 100%;
+    background-color: hsla(var(--primary-color-base), 90%, 0.1);
+    border-color: transparent;
+    font-size: calc(var(--input-size, 2em) * 0.50);
+}
+.btn.round svg {
+    color: var(--light);
+    stroke-width: 4;
+}
+
+.btn.round:hover,
+.btn.round:focus {
+    background-color: rgba(var(--darkest-base), 0.65);
+    border: 1px solid var(--button-border);
+}
+
+.btn.round:hover svg {
+    color: var(--primary-color);
+}
+
+.btn.round:active {
+    background-color: var(--primary-color);
+    border: 1px solid var(--button-border);
+}
+
+.btn.round:active svg {
+    color: var(--darkest);
+}

@@ -128,7 +128,7 @@
 
     const settings = await getSettings();
     const banned = settings.banned.map(({ name }) => name);
-    const isReadingNowBlockOff = settings.isPopularIgnored;
+    const isReadingNowBlockOff = settings.isPopularIgnored && false; // see #
 
     log(`Found list of banned users: ${banned.join(',')} `);
 

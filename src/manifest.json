@@ -1,10 +1,12 @@
 {
     "manifest_version": 2,
-    "author":"drag13",
+    "author": "drag13",
     "name": "HabroSanitizer",
     "description": "This extension removes posts from chosen authors on the Habr.com. Completely free, no ads, no telemetry",
-    "version": "1.1.1",
-    "permissions": ["storage"],
+    "version": "2.0.0",
+    "permissions": [
+        "storage"
+    ],
     "icons": {
         "16": "./asset/i16.png",
         "48": "./asset/i48.png",
@@ -13,8 +15,12 @@
     "options_page": "options.html",
     "content_scripts": [
         {
-            "matches": ["https://habr.com/*"],
-            "js": ["sanitizer.js"]
+            "matches": [
+                "https://habr.com/*"
+            ],
+            "js": [
+                "sanitizer.js"
+            ]
         }
     ]
 }
