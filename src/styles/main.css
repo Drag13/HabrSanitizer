@@ -17,6 +17,7 @@
     --button-border: rgba(154, 160, 166, 0.7);
     --max-width: 1024px;
     --button-text: var(--primary-color);
+    --input-height: 2em;
 }
 
 @media only screen and (max-width: 1600px) {
@@ -107,7 +108,7 @@ body {
 
 .ban-list-section li .lbl {
     font-family: 'Courier New', Courier, monospace;
-    font-size: 2em;
+    font-size: 1.5em;
     color: var(--lighter);
     line-height: 1em;
     padding-right: 0.3em;
@@ -156,4 +157,3 @@ body {
     display: flex;
     align-items: center;
 }
-

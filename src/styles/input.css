@@ -2,9 +2,10 @@ input[type='text'] {
     margin: 0;
     width: 100%;
     box-sizing: border-box;
-    font-size: 1.8em;
     font-family: 'Courier New', Courier, monospace;
+    font-size: calc(var(--input-size, 2em) * 0.66);
     line-height: 1em;
+    height: var(--input-height);
     padding: 0.2em 0.4em;
     border: 1px solid var(--darkest);
     color: var(--input-color);
