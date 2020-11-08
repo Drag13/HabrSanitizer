@@ -84,6 +84,10 @@ body {
     align-items: center;
 }
 
+.input-submit > input {
+    margin-right: 1em;
+}
+
 .ban-list-info {
     padding: 2em 1.6em 1em 1.6em;
     background-color: var(--dark-light);
