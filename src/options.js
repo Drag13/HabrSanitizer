@@ -49,7 +49,6 @@ import { DnD } from './dragAndDrop.js';
         }
 
         $banBtn.addEventListener('click', async () => {
-            document.activeElement.blur();
             const $banInput = document.querySelector('#banname');
             const rawName = $banInput.value;
             const name = rawName != null ? rawName.trim().toLowerCase() : null;
