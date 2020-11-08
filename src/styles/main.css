@@ -119,6 +119,7 @@ body {
     align-items: center;
     background-color: var(--dark-light);
     padding-top: 3em;
+    flex-wrap: wrap;
 }
 
 .json-options {
