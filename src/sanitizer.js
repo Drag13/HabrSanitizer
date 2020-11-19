@@ -123,7 +123,7 @@
 
         log(`Found ${articlesToBeDeleted.length} articles to ban from ${searchTerm}`);
 
-        articlesToBeDeleted.forEach((article) => (article.innerHTML = `<!--${searchTerm} removed-->`));
+        articlesToBeDeleted.forEach((article) => (article.style.display = 'none'));
     }
 
     const settings = await getSettings();

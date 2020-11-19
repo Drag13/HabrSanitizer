@@ -1,5 +1,12 @@
 # HabroSanitizer
 
+## [19.11.2020] V.2.0.1
+
+### Improvments
+
+* Updated texts to give a clearer overview of the functionality
+* Switched from removing the article from the DOM to `display:none` approach for the performance reasons
+
 ## [11.07.2020] V.2.0.0
 
 ### Breaking Change
