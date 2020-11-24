@@ -43,6 +43,14 @@
             : article.querySelector(`.post__title a`)?.href?.toLowerCase()?.includes(`/company/${blogName}`);
     }
 
+    function belongsToHab(article, searchTerm) {
+        return article == null
+            ? false
+            : [...(article.querySelectorAll('.hub-link') ?? [])].some(
+                  (el) => el.innerText?.toLowerCase() === searchTerm
+              );
+    }
+
     /**
      * Gets banned authors from the store
      */
@@ -98,7 +106,9 @@
      */
     function getIdForBannedArticles(articles, banned) {
         return articles
-            .filter((article) => banned.some((name) => belongsToAuthor(article, name) || belongsToBlog(article, name)))
+            .filter((article) =>
+                banned.some((searchTerm) => belongsToAuthor(article, searchTerm) || belongsToHab(article, searchTerm))
+            )
             .map((article) => extractArticleId(article.querySelector('.post__title a')?.href));
     }
 
@@ -118,7 +128,10 @@
         }
 
         const articlesToBeDeleted = articles.filter(
-            (article) => belongsToAuthor(article, searchTerm) || belongsToBlog(article, searchTerm)
+            (article) =>
+                belongsToAuthor(article, searchTerm) ||
+                belongsToBlog(article, searchTerm) ||
+                belongsToHab(article, searchTerm)
         );
 
         log(`Found ${articlesToBeDeleted.length} articles to ban from ${searchTerm}`);
@@ -128,7 +141,7 @@
 
     const settings = await getSettings();
     const banned = settings.banned.map(({ name }) => name);
-    const isReadingNowBlockOff = settings.isPopularIgnored && false; // see #
+    const isReadingNowBlockOff = settings.isPopularIgnored && false; // see #6
 
     log(`Found list of banned users: ${banned.join(',')} `);
 

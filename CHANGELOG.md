@@ -1,5 +1,11 @@
 # HabroSanitizer
 
+## [24.11.2020] V.2.1.1
+
+### Features
+
+* Added possibility to hide hubs. If articles belong to any hub from the ban list - it will be hidden even if it belongs to other habs as well
+
 ## [19.11.2020] V.2.0.1
 
 ### Improvments
