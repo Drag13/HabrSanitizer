@@ -1,0 +1,45 @@
+{
+  "name": "habrsanitizer",
+  "version": "1.0.0",
+  "description": "Home for the Chrome extension to sanitize Habr.com from graphomaniac authors. No external code, no tracking, 100% open source. [Free on Chrome Web Store](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc)",
+  "private": true,
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/preset-env": "^7.12.11",
+    "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^7.0.0",
+    "html-webpack-plugin": "^4.5.0",
+    "webpack": "^5.11.0",
+    "webpack-cli": "^4.2.0"
+  },
+  "scripts": {
+    "test": "echo \"No test specified\" && exit 0",
+    "webpack": "webpack",
+    "build:options": "webpack -c webpack.config.options.js",
+    "build:sanitizer": "webpack -c webpack.config.sanitizer.js",
+    "build": "npm run build:options && npm run build:sanitizer"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Drag13/HabrSanitizer.git"
+  },
+  "keywords": [
+    "habr",
+    "habrahabr",
+    "chrome extension",
+    "firefox extension",
+    "user-script"
+  ],
+  "author": "drag13",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Drag13/HabrSanitizer/issues"
+  },
+  "homepage": "https://github.com/Drag13/HabrSanitizer#readme"
+}

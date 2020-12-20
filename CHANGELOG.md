@@ -1,6 +1,25 @@
 # HabroSanitizer
 
-## [24.11.2020] V.2.0.1
+## [20.20.2020] V.2.3.0
+
+### Features
+
+* Added build process for the extension to support same codebase for the Chrome and FireFox. Loading extension directly from the src is still available without build
+
+### Bugs
+
+* Fixed add button not working when clicked directly on SVG element
+* Fixed issue with closing body tag for the options page (shame on me!)
+
+## [13.20.2020] V.2.2.0
+
+### Features
+
+* `manifest.json` now supports FireFox, extensions can be loaded for the nightly FireFox build with flag `extensions.langpacks.signatures.required` set to false.
+
+### Features
+
+## [24.11.2020] V.2.1.0
 
 ### Features
 

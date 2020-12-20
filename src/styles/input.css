@@ -1,4 +1,4 @@
-input[type='text'] {
+.input {
     margin: 0;
     width: 100%;
     box-sizing: border-box;
@@ -12,7 +12,7 @@ input[type='text'] {
     background-color: var(--darkest);
 }
 
-input[type='text']:focus {
+.input:focus {
     border: 1px solid var(--focus-color);
     outline: none 0 !important;
     box-shadow: none;

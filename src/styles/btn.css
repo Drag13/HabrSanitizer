@@ -12,11 +12,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 .btn svg {
     color: var(--button-text);
+    pointer-events: none;
 }
 
 .btn:hover {
@@ -39,7 +39,7 @@
     border-radius: 100%;
     background-color: hsla(var(--primary-color-base), 90%, 0.1);
     border-color: transparent;
-    font-size: calc(var(--input-size, 2em) * 0.50);
+    font-size: calc(var(--input-size, 2em) * 0.5);
 }
 .btn.round svg {
     color: var(--light);
