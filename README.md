@@ -1,12 +1,13 @@
 # [HabrSanitizer](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc)
 
-Home for the Chrome extension to sanitize Habr.com from graphomaniac authors. No external code, no tracking, 100% open source. [Free on Chrome Web Store](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc)
+Home for the Chrome extension to sanitize Habr.com from graphomaniac authors. No external code, no tracking, 100% open source. [Free on Chrome Web Store](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc) or [FireFox Addons](https://addons.mozilla.org/uk/firefox/addon/habrosanitizer/)
 
-![example](https://raw.githubusercontent.com/Drag13/HabrSanitizer/master/docs/example.jpg)
+![Settings page](https://raw.githubusercontent.com/Drag13/HabrSanitizer/master/docs/example.jpg)
 
 ## Install extension
 
-To install the HabrSanitizer extension follow next steps use this link - [link to the chrome extension store](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc)
+* To install the HabrSanitizer from Chrome Extensions Store - use this link: [Habrosanitizer](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc)
+* To install the HabrSanitizer from FireFox Addons - use this link: [Habrosanitizer](https://addons.mozilla.org/uk/firefox/addon/habrosanitizer/)
 
 Or, follow next steps to be 100% sure that everything is safe:
 
@@ -19,7 +20,7 @@ Or, follow next steps to be 100% sure that everything is safe:
 
 ## Setup
 
-To make it work you need to set list of authors you want to ban:
+To make it work you need to set list of authors/companies/hubs you want to ban:
 
 * Right click on the extension button and click on the **Options** option
 * Use options page to save your personal ban list
@@ -36,7 +37,7 @@ To share the config, make a pull request to this repo. It should contain:
 
 Check `configs/` folder for the example
 
-## Install code
+## Install as a code
 
 To install HabroSanitizer you need to instal [Node.JS](https://nodejs.org/en/) first.
 
