@@ -1,6 +1,6 @@
 # HabroSanitizer
 
-## [20.20.2020] V.2.3.0
+## [20.12.2020] V.2.3.0
 
 ### Features
 
@@ -11,7 +11,7 @@
 * Fixed add button not working when clicked directly on SVG element
 * Fixed issue with closing body tag for the options page (shame on me!)
 
-## [13.20.2020] V.2.2.0
+## [13.12.2020] V.2.2.0
 
 ### Features
 
