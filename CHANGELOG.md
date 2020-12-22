@@ -1,5 +1,15 @@
 # HabroSanitizer
 
+## [22.12.2020] V.2.4.0
+
+### Fetaures
+
+* Added keyboard support for the ban field
+
+### Bugs
+
+* Fixed accessibility for the label
+
 ## [20.12.2020] V.2.3.0
 
 ### Features

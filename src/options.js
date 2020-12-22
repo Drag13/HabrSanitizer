@@ -41,19 +41,24 @@ import { DnD } from './dragAndDrop.js';
     /**
      * @param {Storage} store
      */
-    function initBanBtn(store) {
-        const $banBtn = document.querySelector('#banBtn');
+    function initBanForm(store) {
+        const $banForm = document.querySelector('#ban-form');
 
-        if ($banBtn == null) {
-            throw new Error('No element with class .banBtn found, aborting');
+        if ($banForm == null) {
+            throw new Error('No element with selector #ban-form found, aborting');
         }
 
-        $banBtn.addEventListener('click', async () => {
+        $banForm.addEventListener('submit', async (e) => {
+            if (e.cancelable) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
             const $banInput = document.querySelector('#banname');
             const rawName = $banInput.value;
             const name = rawName != null ? rawName.trim().toLowerCase() : null;
             if (name == null || name === '') {
-                return;
+                return false;
             }
 
             const isAdded = await store.addNewBan({ name, disabled: false });
@@ -62,6 +67,7 @@ import { DnD } from './dragAndDrop.js';
             if (name === 'drag13') {
                 alert('You just banned an author of this extension, the life will be never be the same');
             }
+            return false;
         });
     }
 
@@ -95,23 +101,6 @@ import { DnD } from './dragAndDrop.js';
     /**
      * @param {Storage} store
      */
-    function initIgnoreReadingNowBlock(initialValue, store) {
-        const $exlcudePopularBlock = document.getElementById('exlcude-pop-block');
-
-        if ($exlcudePopularBlock == null) {
-            throw new Error('No element with id exlcude-pop-block found, aborting');
-        }
-
-        $exlcudePopularBlock.checked = !!initialValue;
-
-        $exlcudePopularBlock.addEventListener('change', async (e) => {
-            store.setIgnorePopularFlag(!!e.target.checked);
-        });
-    }
-
-    /**
-     * @param {Storage} store
-     */
     function initDnD(store) {
         const dnd = new DnD('#drop-area');
         dnd.onFileDropped((settings) => store.applySettings(settings));
@@ -121,11 +110,10 @@ import { DnD } from './dragAndDrop.js';
 
     const settings = await storage.getSettings();
 
-    initBanBtn(storage);
+    initBanForm(storage);
     initBanList(storage);
     initDnD(storage);
     initSaveConfigBtn(storage);
-    // initIgnoreReadingNowBlock(settings.isPopularIgnored, storage);
 
     updateBanList(settings.banned);
 

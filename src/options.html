@@ -23,19 +23,22 @@
             </section>
 
             <section class="add-block">
-                <div class="lbl">
-                    <label for="add">Add user name, blog name or hab name to be
-                        hidden</label>
-                </div>
-                <div class="input-submit">
-                    <input class="input" type="text" name="add" id="banname" />
-                    <button class="btn" id="banBtn">
-                        <svg width="20px" height="20px" fill="none" stroke="currentColor" stroke-width="2px"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <use xlink:href="./asset/sprites.svg#plus" />
-                        </svg>
-                    </button>
-                </div>
+                <form id="ban-form" autocomplete="off">
+                    <div class="lbl">
+                        <label for="banname">Add user name, blog name or hab name to be
+                            hidden</label>
+                    </div>
+                    <div class="input-submit">
+                        <input required class="input" type="text" name="add" id="banname" />
+                        <button class="btn" type="submit">
+                            <svg width="20px" height="20px" fill="none" stroke="currentColor" stroke-width="2px"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <use xlink:href="./asset/sprites.svg#plus" />
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+
             </section>
 
             <section class="ban-list-info">
@@ -79,12 +82,6 @@
                 </div>
 
             </section>
-
-            <!-- <section class="options">
-            <input type="checkbox" name="exlcude-pop-block" id="exlcude-pop-block">
-            <label for="exlcude-pop-block">Exclude from "POPULAR RIGHT NOW"</label>
-          </section> -->
-
         </div>
 
     </main>
