@@ -1,6 +1,6 @@
 # [HabrSanitizer](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc)
 
-Home for the Chrome extension to sanitize Habr.com from graphomaniac authors. No external code, no tracking, 100% open source. [Free on Chrome Web Store](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc) or [FireFox Addons](https://addons.mozilla.org/uk/firefox/addon/habrosanitizer/)
+Home for the Chrome and Firefox extension to sanitize Habr.com from graphomaniac authors. No external code, no tracking, 100% open source. [Free on Chrome Web Store](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc) or [FireFox Addons](https://addons.mozilla.org/uk/firefox/addon/habrosanitizer/)
 
 ![Settings page](https://raw.githubusercontent.com/Drag13/HabrSanitizer/master/docs/example.jpg)
 
@@ -12,7 +12,9 @@ Home for the Chrome extension to sanitize Habr.com from graphomaniac authors. No
 Or, follow next steps to be 100% sure that everything is safe:
 
 * Clone https://github.com/Drag13/HabrSanitizer
-* Open [chrome://extensions/](chrome://extensions/) tab
+* Open extensions tab:
+  * Chrome: [chrome://extensions/](chrome://extensions/)
+  * Firefox: [about:addons](about:addons). You need [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/) to install unsigned addons.
 * Enable developer mode toggle on the top-right corner
 * Click Load unpacked on the top-left corner and select SRC folder from the repo
 
