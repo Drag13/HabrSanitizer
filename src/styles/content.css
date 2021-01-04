@@ -1,0 +1,12 @@
+.sanitizer-hidden-article {
+    display: none;
+}
+
+.sanitizer-link-remove-hub {
+    border: solid gray thin;
+    border-radius: 1em;
+    color: darkorange;
+    cursor: pointer;
+    margin-left: 0.2rem;
+    padding: 0 0.2rem;
+}
