@@ -43,12 +43,15 @@
             : article.querySelector(`.post__title a`)?.href?.toLowerCase()?.includes(`/company/${blogName}`);
     }
 
+    /**
+     * Checks if article belongs to particular hub
+     * @param {HTMLElement} article
+     * @returns {boolean}
+     */
     function belongsToHab(article, searchTerm) {
-        return article == null
-            ? false
-            : [...(article.querySelectorAll('.hub-link') ?? [])].some(
-                  (el) => el.innerText?.toLowerCase() === searchTerm
-              );
+        return [...(article?.querySelectorAll('.hub-link') ?? [])].some(
+            (el) => el.innerText?.toLowerCase() === searchTerm || el.href?.toLowerCase()?.includes(`/hub/${searchTerm}`)
+        );
     }
 
     /**
