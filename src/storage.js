@@ -65,6 +65,17 @@ export class Storage {
     }
 
     /**
+     * Update and save various options
+     * @param {object} new options values
+     */
+    async updateOptions(options) {
+        const settings = await this._loadSettings();
+        Object.assign(settings, options);
+        await this._saveSettings(settings);
+        this._notify(settings);
+    }
+
+    /**
      * @returns {Promise<{banned:[], isPopularIgnored:boolean>}
      */
     async _loadSettings() {

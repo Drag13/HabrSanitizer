@@ -150,10 +150,10 @@
      * Add remove action button (link) to each hub link of article
      * @param {HTMLElement[]} article
      */
-    function addHideLinks(article) {
+    function addContentActions(article) {
         article.querySelectorAll('a.hub-link').forEach(a => {
-            const remove_link = document.createElement('a');
-            remove_link.className = 'sanitizer-link-remove-hub';
+            const remove_link = document.createElement('button');
+            remove_link.className = 'sanitizer-action-remove-hub';
             remove_link.title = 'Add this hub to HabroSanitizer banned list';
             remove_link.innerHTML = '&times;';
             remove_link.onclick = addHubToBanned;
@@ -186,7 +186,8 @@
     }
 
     banned.forEach((name) => removeArticle(name, allArticles));
-    get_visible_articles().forEach(addHideLinks); // add hub action buttons for all visible articles
+    if ( settings.show_hub_actions )
+        get_visible_articles().forEach(addContentActions); // add hub action buttons for all visible articles
 
     log(`Sanitization done`);
 })();

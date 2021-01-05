@@ -106,6 +106,18 @@ import { DnD } from './dragAndDrop.js';
         dnd.onFileDropped((settings) => store.applySettings(settings));
     }
 
+    /**
+     * Initialize handlers for content options changes
+     * @param {Storage} store
+     */
+    function initContentOptions(store) {
+        const show_hub_actions = document.getElementById('content-show-hub-actions');
+        if ( show_hub_actions ) {
+            show_hub_actions.checked = settings.show_hub_actions;
+            show_hub_actions.addEventListener('click', e => store.updateOptions({ show_hub_actions: e.target.checked }));
+        }
+    }
+
     const storage = new Storage();
 
     const settings = await storage.getSettings();
@@ -113,6 +125,7 @@ import { DnD } from './dragAndDrop.js';
     initBanForm(storage);
     initBanList(storage);
     initDnD(storage);
+    initContentOptions(storage);
     initSaveConfigBtn(storage);
 
     updateBanList(settings.banned);
