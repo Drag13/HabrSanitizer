@@ -56,6 +56,7 @@
 
     /**
      * Gets banned authors from the store
+     * @returns {Promise<{banned:Array<{name:string, disabled: boolean}>}>}
      */
     async function getSettings() {
         return new Promise((resolve, _) => {
@@ -67,34 +68,16 @@
     }
 
     /**
-     * Removes links from reading now block
-     * @param {number[]} ids
+     * Saves settings
      */
-    function removeLinksFromReadingNow(ids) {
-        const [...list] = document.querySelectorAll('#neuro-habr .content-list__item');
-        const banned = list.filter((x) => {
-            const href = (x.querySelector('.post-info__title')?.href ?? '').toLowerCase();
-            const containsBannedId = ids.some((id) => href.includes(`post/${id}`));
-            return containsBannedId;
-        });
-
-        banned.forEach((x) => (x.innerHTML = `<!-- removed-->`));
+    async function updateSettings(settings) {
+        return new Promise((resolve) => chrome.storage.sync.set({ settings }, () => resolve()));
     }
 
     /**
-     * Extracts article id from href
-     * @param {string} href
-     * @returns number
+     * Detects if this is full article
+     * @param {string} name name of the authour/company
      */
-    function extractArticleId(href) {
-        if (href == null) {
-            return NaN;
-        }
-
-        const trimmed = href.endsWith('/') ? href.slice(0, -1) : href;
-        return trimmed.split('/').pop();
-    }
-
     function onPersonalPage(name) {
         const location = window.location.href.toLowerCase();
         const isOnAuthorPage = location.includes(`/users/${name}/posts`);
@@ -103,27 +86,14 @@
     }
 
     /**
-     * Gets id of the banned articles
-     * @param {HTMLElement[]} articles
-     * @param {string[]} banned list of banned authors/blogs
-     */
-    function getIdForBannedArticles(articles, banned) {
-        return articles
-            .filter((article) =>
-                banned.some((searchTerm) => belongsToAuthor(article, searchTerm) || belongsToHab(article, searchTerm))
-            )
-            .map((article) => extractArticleId(article.querySelector('.post__title a')?.href));
-    }
-
-    /**
      * Removes article from regular list by author name
-     * @param {string} author
+     * @param {string} keyword
      * @param {HTMLElement[]} articles
      */
-    function removeArticle(author, articles) {
-        const searchTerm = (author ?? '').toString().toLowerCase();
+    function removeArticle(keyword, articles) {
+        const searchTerm = (keyword ?? '').toString().toLowerCase();
 
-        const isOnPersonalPage = onPersonalPage(author);
+        const isOnPersonalPage = onPersonalPage(searchTerm);
 
         if (isOnPersonalPage) {
             log(`We are on the ${searchTerm} personal page, skipping`);
@@ -145,52 +115,64 @@
     /**
      * Gets all visible (not banned) articles
      */
-    function get_visible_articles() {
+    function getVisibleArticles() {
         return [...document.querySelectorAll('article:not(.post_full):not(.sanitizer-hidden-article)')];
+    }
+
+    /**
+     * Creates hide button
+     * @param {string} title button title
+     * @param {(e:Event)=>void} handler button handler
+     */
+    function createHideBtn(title, handler) {
+        const hideHubBtn = document.createElement('button');
+        hideHubBtn.className = 'sanitizer-action-remove-hub';
+        hideHubBtn.title = title;
+        hideHubBtn.innerText = 'x';
+        hideHubBtn.type = 'button';
+        hideHubBtn.onclick = handler;
+
+        return hideHubBtn;
+    }
+
+    /**
+     * Add quick action to hide hub
+     * @param {HTMLElement[]} article
+     */
+    function addHideHubQuickAction(article) {
+        article.querySelectorAll('a.hub-link').forEach((a) => {
+            const hideHubBtn = createHideBtn('Add this hub to HabroSanitizer banned list', async (event) => {
+                const a = event.currentTarget.previousElementSibling;
+                const hubname = a.textContent.toLocaleLowerCase();
+                const settings = await getSettings();
+                settings.banned.push({ name: hubname, disabled: false });
+                await updateSettings(settings);
+                removeArticle(hubname, getVisibleArticles());
+            });
+            a.insertAdjacentElement('afterend', hideHubBtn);
+        });
     }
 
     /**
      * Add remove action button (link) to each hub link of article
      * @param {HTMLElement[]} article
      */
-    function addContentActions(article) {
-        article.querySelectorAll('a.hub-link').forEach(a => {
-            const remove_link = document.createElement('button');
-            remove_link.className = 'sanitizer-action-remove-hub';
-            remove_link.title = 'Add this hub to HabroSanitizer banned list';
-            remove_link.innerHTML = '&times;';
-            remove_link.onclick = addHubToBanned;
-            a.insertAdjacentElement('afterend', remove_link);
-        });
-    }
-
-    /**
-     * Event handler for append hub name to ban list and hide all related visible articles
-     * @param {Event[]} click event
-     */
-    function addHubToBanned(event) {
-        const a = event.currentTarget.previousElementSibling, hubname = a.textContent.toLocaleLowerCase();
-        settings.banned.push({ name: hubname, disabled: false });
-        chrome.storage.sync.set({ settings }, () => removeArticle(hubname, get_visible_articles()));
+    function addQuickActionButtons(article) {
+        addHideHubQuickAction(article);
     }
 
     const settings = await getSettings();
     const banned = settings.banned.map(({ name }) => name);
-    const isReadingNowBlockOff = settings.isPopularIgnored && false; // see #6
 
     log(`Found list of banned users: ${banned.join(',')} `);
 
     const [...allArticles] = document.querySelectorAll('article:not(.post_full)');
 
-    if (isReadingNowBlockOff) {
-        const listOfBannedId = getIdForBannedArticles(allArticles, banned);
-        console.log(`Found ids for ban: "${listOfBannedId.join(',')}"`);
-        removeLinksFromReadingNow(listOfBannedId);
-    }
-
     banned.forEach((name) => removeArticle(name, allArticles));
-    if ( settings.show_hub_actions )
-        get_visible_articles().forEach(addContentActions); // add hub action buttons for all visible articles
+
+    if (settings.isQuickActionsOn) {
+        getVisibleArticles().forEach(addQuickActionButtons); // add hub action buttons for all visible articles
+    }
 
     log(`Sanitization done`);
 })();
