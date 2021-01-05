@@ -136,7 +136,39 @@
 
         log(`Found ${articlesToBeDeleted.length} articles to ban from ${searchTerm}`);
 
-        articlesToBeDeleted.forEach((article) => (article.style.display = 'none'));
+        articlesToBeDeleted.forEach((article) => article.classList.add('sanitizer-hidden-article'));
+    }
+
+    /**
+     * Gets all visible (not banned) articles
+     */
+    function get_visible_articles() {
+        return [...document.querySelectorAll('article:not(.post_full):not(.sanitizer-hidden-article)')];
+    }
+
+    /**
+     * Add remove action button (link) to each hub link of article
+     * @param {HTMLElement[]} article
+     */
+    function addContentActions(article) {
+        article.querySelectorAll('a.hub-link').forEach(a => {
+            const remove_link = document.createElement('button');
+            remove_link.className = 'sanitizer-action-remove-hub';
+            remove_link.title = 'Add this hub to HabroSanitizer banned list';
+            remove_link.innerHTML = '&times;';
+            remove_link.onclick = addHubToBanned;
+            a.insertAdjacentElement('afterend', remove_link);
+        });
+    }
+
+    /**
+     * Event handler for append hub name to ban list and hide all related visible articles
+     * @param {Event[]} click event
+     */
+    function addHubToBanned(event) {
+        const a = event.currentTarget.previousElementSibling, hubname = a.textContent.toLocaleLowerCase();
+        settings.banned.push({ name: hubname, disabled: false });
+        chrome.storage.sync.set({ settings }, () => removeArticle(hubname, get_visible_articles()));
     }
 
     const settings = await getSettings();
@@ -154,6 +186,8 @@
     }
 
     banned.forEach((name) => removeArticle(name, allArticles));
+    if ( settings.show_hub_actions )
+        get_visible_articles().forEach(addContentActions); // add hub action buttons for all visible articles
 
     log(`Sanitization done`);
 })();

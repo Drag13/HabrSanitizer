@@ -162,3 +162,13 @@ body {
     display: flex;
     align-items: center;
 }
+
+.content-options-form {
+    margin-top: 1em;
+}
+
+.content-options-section {
+    background-color: var(--dark-light);
+    margin: 1em 0;
+    padding: 1em;
+}

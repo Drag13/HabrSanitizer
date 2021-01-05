@@ -23,6 +23,9 @@
             ],
             "js": [
                 "sanitizer.js"
+            ],
+            "css": [
+                "styles/content.css"
             ]
         }
     ],
