@@ -21,6 +21,7 @@
     height: 100%;
     max-width: 100%;
     min-width: 100%;
+    pointer-events: none;
 }
 
 .sanitizer-action-remove-hub:hover {
