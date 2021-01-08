@@ -2,7 +2,7 @@
     ('use strict');
 
     const LOG = false;
-    const DEFAULT_SETTINGS = { banned: [], isPopularIgnored: false };
+    const DEFAULT_SETTINGS = { banned: [], isQuickActionsOn: false };
     const selectors = {
         author: '.user-info__nickname',
         company: '.post__title a',
