@@ -1,4 +1,4 @@
-# HabroSanitizer
+# HabroSanitizer - web extension to sanitize Habr.com from graphomaniac authors
 
 ## [08.01.2021] V.2.5.0
 
@@ -8,7 +8,7 @@
 
 ### Improvments
 
-* Added possibility to hide posts from company using `short` name - company name on Habr.com. Thanks @codeschlosser for the improvment
+* Added possibility to hide posts from company using `short` name - company name on Habr.com. Thanks @codeschlosser for the improvement
 
 ## [22.12.2020] V.2.4.0
 
