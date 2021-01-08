@@ -41,5 +41,8 @@
   "bugs": {
     "url": "https://github.com/Drag13/HabrSanitizer/issues"
   },
-  "homepage": "https://github.com/Drag13/HabrSanitizer#readme"
+  "homepage": "https://github.com/Drag13/HabrSanitizer#readme",
+  "optionalDependencies": {
+    "adm-zip": "^0.5.1"
+  }
 }
