@@ -23,7 +23,8 @@
     "webpack": "webpack",
     "build:options": "webpack -c webpack.config.options.js",
     "build:sanitizer": "webpack -c webpack.config.sanitizer.js",
-    "build": "npm run build:options && npm run build:sanitizer"
+    "build": "npm run build:options && npm run build:sanitizer",
+    "pack": "node pack.js"
   },
   "repository": {
     "type": "git",
