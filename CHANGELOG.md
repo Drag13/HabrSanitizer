@@ -1,4 +1,14 @@
-# HabroSanitizer
+# HabroSanitizer - web extension to sanitize Habr.com from graphomaniac authors
+
+## [08.01.2021] V.2.5.0
+
+### Features
+
+* Added "Quick Actions" - buttons that can be used to hide author/blog/hub directly from the feed. Turned off by default. Thanks @ximeric for the feature.
+
+### Improvments
+
+* Added possibility to hide posts from company using `short` name - company name on Habr.com. Thanks @codeschlosser for the improvement
 
 ## [22.12.2020] V.2.4.0
 
