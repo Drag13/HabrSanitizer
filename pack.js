@@ -9,6 +9,10 @@ const outputTo = 'sanitizer.zip';
 const optionsBundle = 'options.js';
 const pageBundle = 'sanitizer.js';
 
+/**
+ * Checks if regeneratorRuntime present in the code
+ * @param {string} pathToFile path to js file to be checked
+ */
 function checkRegenrationRuntime(pathToFile) {
     process.stdout.write(`start checking presence of the regenration runtime for ${pathToFile}...`);
     const isFileExists = existsSync(pathToFile);
@@ -18,7 +22,7 @@ function checkRegenrationRuntime(pathToFile) {
 
     const data = readFileSync(pathToFile, { encoding: 'utf-8' });
 
-    const isRegenrationRuntimeExists = /regenerationruntime/i.test(data);
+    const isRegenrationRuntimeExists = /regeneratorRuntime/i.test(data);
 
     if (isRegenrationRuntimeExists) {
         throw new Error('Regeneration runtime found in build, aborting');
@@ -27,6 +31,10 @@ function checkRegenrationRuntime(pathToFile) {
     process.stdout.write('OK \n');
 }
 
+/**
+ * Removes specefied folder
+ * @param {string} output Path to folder to clean
+ */
 function cleanup(output) {
     console.log('starting cleanup');
     if (existsSync(output)) {
@@ -43,9 +51,12 @@ function buildCode() {
     console.log('building is done');
 }
 
-function pack({ from, to, filesToCheck }) {
+/**
+ * Packs files into archive for publishing
+ * @param {{from:string, to: string, filesToCheck:string[]}} p
+ */
+function pack(from, to) {
     console.log('start packing');
-    filesToCheck.map((fileName) => resolve(from, fileName)).forEach(checkRegenrationRuntime);
 
     var zip = new AdmZip();
 
@@ -60,6 +71,15 @@ function pack({ from, to, filesToCheck }) {
     });
 }
 
+/**
+ * Tests final build
+ * @param {string[]} filesToCheck  Files to be checked
+ */
+function testBuildFiles(filesToCheck) {
+    filesToCheck.map((fileName) => resolve(from, fileName)).forEach(checkRegenrationRuntime);
+}
+
 cleanup(outputTo);
 buildCode();
-pack({ from, to: outputTo, filesToCheck: [optionsBundle, pageBundle] });
+testBuildFiles([optionsBundle, pageBundle]);
+pack(from, outputTo);
