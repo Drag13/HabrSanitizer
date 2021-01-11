@@ -54,29 +54,17 @@ export class Storage {
     }
 
     /**
-     * Saves flag to ignore/show banned posts from ignored authors
-     * @param {boolean} isIgnored Ignore popular section
-     */
-    async setIgnorePopularFlag(isIgnored) {
-        const settings = await this._loadSettings();
-        settings.isPopularIgnored = isIgnored;
-        await this._saveSettings(settings);
-        this._notify(settings);
-    }
-
-    /**
      * Update and save various options
-     * @param {object} new options values
+     * @param {boolean} isQuickActionsOn is quick actions available
      */
-    async updateOptions(options) {
+    async setQuickActionsFlag(isQuickActionsOn) {
         const settings = await this._loadSettings();
-        Object.assign(settings, options);
+        settings.isQuickActionsOn = isQuickActionsOn;
         await this._saveSettings(settings);
-        this._notify(settings);
     }
 
     /**
-     * @returns {Promise<{banned:[], isPopularIgnored:boolean>}
+     * @returns {Promise<{banned:[], isQuickActionsOn:boolean, isPopularIgnored:boolean>}
      */
     async _loadSettings() {
         return new Promise((res, _) => {

@@ -23,7 +23,8 @@
     "webpack": "webpack",
     "build:options": "webpack -c webpack.config.options.js",
     "build:sanitizer": "webpack -c webpack.config.sanitizer.js",
-    "build": "npm run build:options && npm run build:sanitizer"
+    "build": "npm run build:options && npm run build:sanitizer",
+    "pack": "node pack.js"
   },
   "repository": {
     "type": "git",
@@ -41,5 +42,8 @@
   "bugs": {
     "url": "https://github.com/Drag13/HabrSanitizer/issues"
   },
-  "homepage": "https://github.com/Drag13/HabrSanitizer#readme"
+  "homepage": "https://github.com/Drag13/HabrSanitizer#readme",
+  "optionalDependencies": {
+    "adm-zip": "^0.5.1"
+  }
 }

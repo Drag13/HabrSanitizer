@@ -19,3 +19,7 @@
     -moz-box-shadow: none;
     -webkit-box-shadow: none;
 }
+
+.checkbox + label {
+    cursor: pointer;
+}

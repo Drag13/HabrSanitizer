@@ -14,7 +14,17 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: [['@babel/preset-env', { targets: { esmodules: true } }]],
+                        presets: [
+                            [
+                                '@babel/preset-env',
+                                {
+                                    targets: {
+                                        chrome: '55',
+                                        firefox: '53', // chrome.storage.sync works from 53
+                                    },
+                                },
+                            ],
+                        ],
                     },
                 },
             },

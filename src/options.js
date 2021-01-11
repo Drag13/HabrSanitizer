@@ -110,12 +110,15 @@ import { DnD } from './dragAndDrop.js';
      * Initialize handlers for content options changes
      * @param {Storage} store
      */
-    function initContentOptions(store) {
-        const show_hub_actions = document.getElementById('content-show-hub-actions');
-        if ( show_hub_actions ) {
-            show_hub_actions.checked = settings.show_hub_actions;
-            show_hub_actions.addEventListener('click', e => store.updateOptions({ show_hub_actions: e.target.checked }));
+    function initQuickActions(store) {
+        const $quickActionCheckbox = document.getElementById('quick-actions-toggler');
+
+        if ($quickActionCheckbox == null) {
+            throw new Error('No element with id quick-actions-toggler found, aborting');
         }
+
+        $quickActionCheckbox.checked = settings.isQuickActionsOn;
+        $quickActionCheckbox.addEventListener('click', (e) => store.setQuickActionsFlag(e.target.checked));
     }
 
     const storage = new Storage();
@@ -125,7 +128,7 @@ import { DnD } from './dragAndDrop.js';
     initBanForm(storage);
     initBanList(storage);
     initDnD(storage);
-    initContentOptions(storage);
+    initQuickActions(storage);
     initSaveConfigBtn(storage);
 
     updateBanList(settings.banned);
