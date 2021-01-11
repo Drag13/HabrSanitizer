@@ -1,9 +1,31 @@
 const { execSync } = require('child_process');
+const { existsSync, unlinkSync, readFileSync } = require('fs');
+const { resolve } = require('path');
+
 const AdmZip = require('adm-zip');
-const { existsSync, unlinkSync } = require('fs');
 
 const from = 'dist';
 const outputTo = 'sanitizer.zip';
+const optionsBundle = 'options.js';
+const pageBundle = 'sanitizer.js';
+
+function checkRegenrationRuntime(pathToFile) {
+    process.stdout.write(`start checking presence of the regenration runtime for ${pathToFile}...`);
+    const isFileExists = existsSync(pathToFile);
+    if (!isFileExists) {
+        throw new Error(`File ${pathToFile} not exists`);
+    }
+
+    const data = readFileSync(pathToFile, { encoding: 'utf-8' });
+
+    const isRegenrationRuntimeExists = /regenerationruntime/i.test(data);
+
+    if (isRegenrationRuntimeExists) {
+        throw new Error('Regeneration runtime found in build, aborting');
+    }
+
+    process.stdout.write('OK \n');
+}
 
 function cleanup(output) {
     console.log('starting cleanup');
@@ -21,8 +43,10 @@ function buildCode() {
     console.log('building is done');
 }
 
-function pack(from, to) {
+function pack({ from, to, filesToCheck }) {
     console.log('start packing');
+    filesToCheck.map((fileName) => resolve(from, fileName)).forEach(checkRegenrationRuntime);
+
     var zip = new AdmZip();
 
     zip.addLocalFolder(from);
@@ -38,4 +62,4 @@ function pack(from, to) {
 
 cleanup(outputTo);
 buildCode();
-pack(from, outputTo);
+pack({ from, to: outputTo, filesToCheck: [optionsBundle, pageBundle] });
