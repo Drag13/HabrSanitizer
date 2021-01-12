@@ -166,7 +166,6 @@
         article.querySelectorAll('a.hub-link').forEach((a) => {
             const searchTerm = a.innerText;
             if (isEmpty(searchTerm)) {
-                /** */
                 return;
             }
 
