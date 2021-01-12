@@ -14,6 +14,9 @@
     "babel-loader": "^8.2.2",
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^7.0.0",
+    "eslint": "^7.17.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-config-prettier": "^7.1.0",
     "html-webpack-plugin": "^4.5.0",
     "husky": "^4.3.7",
     "lint-staged": "^10.5.3",
@@ -27,6 +30,8 @@
     "build:options": "webpack -c webpack.config.options.js",
     "build:sanitizer": "webpack -c webpack.config.sanitizer.js",
     "build": "npm run build:options && npm run build:sanitizer",
+    "prettier": "prettier src --write --config .prettierrc",
+    "lint": "eslint src/**/*.js",
     "pack": "node pack.js"
   },
   "repository": {
@@ -51,7 +56,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "lint"
     }
   }
 }
