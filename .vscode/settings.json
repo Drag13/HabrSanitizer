@@ -1,6 +1,0 @@
-{
-    "prettier.configPath": ".prettierrc",
-    "prettier.htmlWhitespaceSensitivity": "strict",
-    "html.format.endWithNewline": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-}
