@@ -1,3 +1,8 @@
+/**
+ * Saves object as a file from browser
+ * @param {Object} data Object to save to the file
+ * @param {string} fileName Name of the file to save
+ */
 export function saveToFile(data, fileName) {
     const a = document.createElement('a');
     document.body.appendChild(a);

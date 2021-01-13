@@ -4,9 +4,7 @@
     "name": "HabroSanitizer",
     "description": "This extension removes posts from chosen authors, blogs, or hubs on Habr.com (habrahabr). Free, no ads, no tracking, no telemetry.",
     "version": "2.5.1",
-    "permissions": [
-        "storage"
-    ],
+    "permissions": ["storage"],
     "icons": {
         "16": "./asset/i16.png",
         "48": "./asset/i48.png",
@@ -18,15 +16,9 @@
     },
     "content_scripts": [
         {
-            "matches": [
-                "https://habr.com/*"
-            ],
-            "js": [
-                "sanitizer.js"
-            ],
-            "css": [
-                "styles/content.css"
-            ]
+            "matches": ["https://habr.com/*"],
+            "js": ["sanitizer.js"],
+            "css": ["styles/content.css"]
         }
     ],
     "browser_specific_settings": {

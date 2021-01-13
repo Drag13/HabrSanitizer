@@ -1,5 +1,11 @@
+/**
+ * Wrapper for the Drag&Drop
+ */
 export class DnD {
-    _ref;
+    /**
+     * Creates Drag&Drop interface for element
+     * @param {string} selector Selector to be attach to
+     */
     constructor(selector) {
         this._ref = document.querySelector(selector);
         if (!this._ref) {
@@ -13,6 +19,10 @@ export class DnD {
         });
     }
 
+    /**
+     * Subscribes to event when file loaded by DnD
+     * @param {Function<any>} callback Handler to receive data from the DnD
+     */
     onFileDropped(callback) {
         this._ref.addEventListener('drop', (event) => {
             event.stopPropagation();
