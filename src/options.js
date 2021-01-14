@@ -2,7 +2,17 @@ import { Storage } from './storage.js';
 import { saveToFile } from './file.js';
 import { DnD } from './dragAndDrop.js';
 
+/**
+ * BanList
+ * @typedef {Array<{name:string}>} BanList
+ **/
+
 (async function () {
+    /**
+     * Renders list of banned
+     * @param {BanList} banned List of banned
+     * @return {string}
+     */
     function renderBanList(banned) {
         if (!banned || !banned.length) {
             return ``;
@@ -32,6 +42,10 @@ import { DnD } from './dragAndDrop.js';
             .join('');
     }
 
+    /**
+     *Updates list of banned
+     * @param {BanList} banned List of banned
+     */
     function updateBanList(banned) {
         const banList = renderBanList(banned);
         const $bans = document.querySelector('.ban-list');

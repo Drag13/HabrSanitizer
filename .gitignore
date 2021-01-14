@@ -2,3 +2,4 @@ src.pem
 src.crx
 node_modules
 dist
+settings.json

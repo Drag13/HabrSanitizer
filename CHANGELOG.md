@@ -1,5 +1,11 @@
 # HabroSanitizer - web extension to sanitize Habr.com from graphomaniac authors
 
+## [11.01.2021] V.2.5.1
+
+### Hotifx
+
+* Removed [regenratorRuntime](https://www.npmjs.com/package/regenerator-runtime) from build
+
 ## [08.01.2021] V.2.5.0
 
 ### Features

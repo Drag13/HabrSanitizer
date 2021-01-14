@@ -1,3 +1,5 @@
+/** @typedef {{banned:Array<{name:string, disabled: boolean}>,isQuickActionsOn: boolean}} SanitizerSettings */
+
 (async function () {
     ('use strict');
 
@@ -22,6 +24,7 @@
     /**
      * Check if string is empty (null, undefined, sapces)
      * @param {string} v string value
+     * @return {boolean}
      */
     function isEmpty(v) {
         return v == null || v.toString().trim() === '';
@@ -31,6 +34,7 @@
      * Compares two strings ignoring case
      * @param {string} v1 First argument
      * @param {string} v2 Second argument
+     * @return {boolean}
      */
     function equalsCaseInsensetive(v1, v2) {
         return (v1 || '').toString().toLowerCase() === (v2 || '').toString().toLowerCase();
@@ -38,9 +42,11 @@
 
     /**
      * Checks if current page is personal
+     * @param {string} url current url
+     * @return {boolean}
      */
-    function onPersonalPage() {
-        const location = window.location.href.toLowerCase();
+    function onPersonalPage(url) {
+        const location = url.toLowerCase();
 
         const onUsersPageRegex = /\/users\/.*\/posts/;
         const onBlogPageRegex = /\/company\/.*\/blog/;
@@ -52,7 +58,8 @@
     /**
      * Checks if article belongs to particular user
      * @param {HTMLElement} article
-     * @returns {boolean}
+     * @param {string} authorName name of the banned author
+     * @return {boolean}
      */
     function belongsToAuthor(article, authorName) {
         return article == null
@@ -63,7 +70,8 @@
     /**
      * Checks if article belongs to particular blog
      * @param {HTMLElement} article
-     * @returns {boolean}
+     * @param {string} blogName Name of the blog
+     * @return {boolean}
      */
     function belongsToBlog(article, blogName) {
         return article == null
@@ -74,7 +82,8 @@
     /**
      * Checks if article belongs to particular hub
      * @param {HTMLElement} article
-     * @returns {boolean}
+     * @param {string} searchTerm Name of the hub
+     * @return {boolean}
      */
     function belongsToHab(article, searchTerm) {
         return [...(article?.querySelectorAll(selectors.hub) ?? [])].some(
@@ -84,7 +93,7 @@
 
     /**
      * Gets banned authors from the store
-     * @returns {Promise<{banned:Array<{name:string, disabled: boolean}>,isQuickActionsOn: boolean}>}
+     * @return {Promise<SanitizerSettings>}
      */
     async function getSettings() {
         return new Promise((resolve, _) => {
@@ -97,7 +106,7 @@
 
     /**
      * Update settings
-     * @param {{banned:Array<{name:string, disabled: boolean}>,isQuickActionsOn: boolean}} Updates settings
+     * @param {SanitizerSettings} settings updates settings
      */
     async function updateSettings(settings) {
         return new Promise((resolve) => chrome.storage.sync.set({ settings }, () => resolve()));
@@ -105,6 +114,7 @@
 
     /**
      * Gets all visible (not banned) articles
+     * @return {HtmlELement} List of visible articles
      */
     function getVisibleArticles() {
         return [...document.querySelectorAll(selectors.notHiddenArticle)];
@@ -143,6 +153,7 @@
      * Creates hide button
      * @param {string} title button title
      * @param {string} searchTerm key to ignore article
+     * @return {HTMLButtonElement}
      */
     function createHideBtn(title, searchTerm) {
         const hideHubBtn = document.createElement('button');
@@ -224,7 +235,7 @@
         articlesToBeDeleted.forEach((article) => article.classList.add('sanitizer-hidden-article'));
     }
 
-    const isOnPersonalPage = onPersonalPage();
+    const isOnPersonalPage = onPersonalPage(window.location.href);
 
     if (isOnPersonalPage) {
         log('We are on the perosnal page, HabroSanitizer actions disabled');
