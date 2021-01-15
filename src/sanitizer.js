@@ -41,21 +41,6 @@
     }
 
     /**
-     * Checks if current page is personal
-     * @param {string} url current url
-     * @return {boolean}
-     */
-    function onPersonalPage(url) {
-        const location = url.toLowerCase();
-
-        const onUsersPageRegex = /\/users\/.*\/posts/;
-        const onBlogPageRegex = /\/company\/.*\/blog/;
-        const onArticlePageRegex = /\/post\/d*/;
-
-        return onUsersPageRegex.test(location) || onBlogPageRegex.test(location) || onArticlePageRegex.test(location);
-    }
-
-    /**
      * Checks if article belongs to particular user
      * @param {HTMLElement} article
      * @param {string} authorName name of the banned author
@@ -235,10 +220,9 @@
         articlesToBeDeleted.forEach((article) => article.classList.add('sanitizer-hidden-article'));
     }
 
-    const isOnPersonalPage = onPersonalPage(window.location.href);
-
-    if (isOnPersonalPage) {
-        log('We are on the perosnal page, HabroSanitizer actions disabled');
+    const excludePageRegex = new RegExp("/(users/.+/posts|company/.+/blog|post/\\d+|news/t/\\d+)/", 'i');
+    if ( excludePageRegex.test(window.location.pathname) ) {
+        log('We are on the excluded page, HabroSanitizer actions disabled');
         return;
     }
 
