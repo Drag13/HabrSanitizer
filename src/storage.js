@@ -19,23 +19,6 @@ const isNull = (v) => v == null || v === '';
  * Persistent storage for the user settings
  */
 export class Storage {
-    /**
-     * Returns instance of the storage
-     */
-    constructor() {
-        this._notify = (settings) => {
-            typeof this._handler === 'function' && this._handler(settings);
-        };
-    }
-
-    /**
-     * Gets settings from the Storage
-     * @return {SanitizerSettings}
-     */
-    async getSettings() {
-        const settings = await this._loadSettings();
-        return settings;
-    }
 
     /**
      * Push new settings to the storage (overrides all)
@@ -45,8 +28,7 @@ export class Storage {
         if (!settings || !settings.banned || !Array.isArray(settings.banned)) {
             throw new Error('Settings formatted incorrectly');
         }
-        this._saveSettings(settings);
-        this._notify(settings);
+        return this._saveSettings(settings);
     }
 
     /**
@@ -58,7 +40,7 @@ export class Storage {
             return;
         }
 
-        const settings = await this._loadSettings();
+        const settings = await this.loadSettings();
         const exists = !!settings.banned.find((x) => isEquals(x.name, author.name));
 
         if (exists) {
@@ -67,7 +49,6 @@ export class Storage {
 
         settings.banned.push(author);
         await this._saveSettings(settings);
-        this._notify(settings);
 
         return true;
     }
@@ -81,11 +62,10 @@ export class Storage {
             return;
         }
 
-        const settings = await this._loadSettings();
+        const settings = await this.loadSettings();
         settings.banned = settings.banned.filter((author) => !isEquals(author.name, userName));
 
-        await this._saveSettings(settings);
-        this._notify(settings);
+        return this._saveSettings(settings);
     }
 
     /**
@@ -93,23 +73,28 @@ export class Storage {
      * @param {boolean} isQuickActionsOn is quick actions available
      */
     async setQuickActionsFlag(isQuickActionsOn) {
-        const settings = await this._loadSettings();
+        const settings = await this.loadSettings();
         settings.isQuickActionsOn = isQuickActionsOn;
-        await this._saveSettings(settings);
+        return this._saveSettings(settings);
     }
 
     /**
-     * Subscribe to settings change
+     * Subscribe to settings change event
+     * @param {string} watched settings key
      * @param {Function} handler
      */
-    onChange(handler) {
-        this._handler = handler;
+    onSettingsChange(key, handler) {
+        chrome.storage.onChanged.addListener((changes) => {
+            const nv = changes.settings.newValue[key], ov = changes.settings.oldValue[key];
+            if ( JSON.stringify(nv) != JSON.stringify(ov) )
+                handler(nv, ov);
+        });
     }
 
     /** Private
      * @return {SanitizerSettings} user settings
      */
-    async _loadSettings() {
+    async loadSettings() {
         return new Promise((res, _) => {
             chrome.storage.sync.get('settings', (data) => res(data && data.settings ? data.settings : { banned: [] }));
         });
