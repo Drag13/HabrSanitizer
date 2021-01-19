@@ -243,8 +243,8 @@
     }
 
     /**
-     * Restores visibility of article on site page by keyword
-     * @param {string} keyword
+     * Restores visibility of article on site page by keyword (search term)
+     * @param {string} searchTerm
      */
     function tryRestoreArticles(searchTerm) {
         const articlesToBeRestored = hiddenArticles.filter(
@@ -266,8 +266,8 @@
     }
 
     /**
-     * Subscribe to settings change event
-     * @param {string} watched settings key
+     * Subscribe to settings change event, watched by settings key
+     * @param {string} key
      * @param {Function} handler
      */
     function onSettingsChange(key, handler) {
@@ -280,7 +280,7 @@
 
     /**
      * Reaction on switching isQuickActionsOn on options page
-     * @param {object} new value of setting
+     * @param {object} newValue New value of setting
      */
     function onQuickActionsVisibilityChange(newValue) {
         if ( newValue )
@@ -292,8 +292,8 @@
 
     /**
      * Reaction on changed ban list on options page
-     * @param {object} new value of setting
-     * @param {object} old value of setting
+     * @param {object} newValue New value of setting
+     * @param {object} oldValue Old value of setting
      */
     function onBanListChange(newValue, oldValue) {
         const newList = newValue.filter(x => !x.disabled).map(x => x.name),

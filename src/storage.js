@@ -79,8 +79,8 @@ export class Storage {
     }
 
     /**
-     * Subscribe to settings change event
-     * @param {string} watched settings key
+     * Subscribe to settings change event, watched by settings key
+     * @param {string} key
      * @param {Function} handler
      */
     onSettingsChange(key, handler) {
