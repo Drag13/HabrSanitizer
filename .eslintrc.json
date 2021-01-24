@@ -11,5 +11,14 @@
         "ecmaVersion": 12,
         "sourceType": "module"
     },
-    "rules": {}
+    "rules": {
+        "eqeqeq": [
+            2,
+            "allow-null"
+        ],
+        "curly": [
+            2,
+            "all"
+        ]
+    }
 }
