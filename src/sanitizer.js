@@ -5,8 +5,8 @@
 
     const LOG = false;
     const DEFAULT_SETTINGS = { banned: [], isQuickActionsOn: false };
-    const hideHubButtonClassName = 'sanitizer-action-remove-hub',
-        hiddenArticleClassName = 'sanitizer-hidden-article';
+    const hideHubButtonClassName = 'sanitizer-action-remove-hub';
+    const hiddenArticleClassName = 'sanitizer-hidden-article';
     const selectors = {
         author: '.user-info__nickname',
         company: '.post__title a',
@@ -236,8 +236,9 @@
         articlesToBeDeleted.forEach((article) => {
             visibleArticles.splice(visibleArticles.indexOf(article), 1);
             hiddenArticles.push(article);
-            if ( settings.isQuickActionsOn )
+            if ( settings.isQuickActionsOn ) {
                 delQuickActionButtons(article);
+            }
             article.classList.add(hiddenArticleClassName);
         });
     }
@@ -259,8 +260,9 @@
         articlesToBeRestored.forEach((article) => {
             hiddenArticles.splice(hiddenArticles.indexOf(article), 1);
             visibleArticles.push(article);
-            if ( settings.isQuickActionsOn )
+            if ( settings.isQuickActionsOn ) {
                 addQuickActionButtons(article);
+            }
             article.classList.remove(hiddenArticleClassName);
         });
     }
@@ -272,9 +274,11 @@
      */
     function onSettingsChange(key, handler) {
         chrome.storage.onChanged.addListener((changes) => {
-            const nv = changes.settings.newValue[key], ov = changes.settings.oldValue[key];
-            if ( JSON.stringify(nv) != JSON.stringify(ov) )
+            const nv = changes.settings.newValue?.[key];
+            const ov = changes.settings.oldValue?.[key];
+            if ( JSON.stringify(nv) !== JSON.stringify(ov) ) {
                 handler(nv, ov);
+            }
         });
     }
 
@@ -283,10 +287,11 @@
      * @param {object} newValue New value of setting
      */
     function onQuickActionsVisibilityChange(newValue) {
-        if ( newValue )
+        if ( newValue ) {
             visibleArticles.forEach(addQuickActionButtons);
-        else
+        } else {
             visibleArticles.forEach(delQuickActionButtons);
+        }
         settings.isQuickActionsOn = newValue;
     }
 
@@ -296,10 +301,10 @@
      * @param {object} oldValue Old value of setting
      */
     function onBanListChange(newValue, oldValue) {
-        const newList = newValue.filter(x => !x.disabled).map(x => x.name),
-            oldList = oldValue.filter(x => !x.disabled).map(x => x.name),
-            added = newList.filter(x => !oldList.includes(x)),
-            removed = oldList.filter(x => !newList.includes(x));
+        const newList = newValue.filter(x => !x.disabled).map(x => x.name);
+        const oldList = oldValue.filter(x => !x.disabled).map(x => x.name);
+        const added = newList.filter(x => !oldList.includes(x));
+        const removed = oldList.filter(x => !newList.includes(x));
         added.forEach(tryRemoveArticles);
         removed.forEach(tryRestoreArticles);
         settings.banned = newValue;
@@ -316,8 +321,8 @@
     const banned = settings.banned.map(({ name }) => name);
     log(`Found list of banned users: ${banned.join(',')} `);
 
-    const [...visibleArticles] = document.querySelectorAll(selectors.article),
-        hiddenArticles = [];
+    const [...visibleArticles] = document.querySelectorAll(selectors.article);
+    const hiddenArticles = [];
 
     banned.forEach(tryRemoveArticles);
     settings.isQuickActionsOn && visibleArticles.forEach(addQuickActionButtons);

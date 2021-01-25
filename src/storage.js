@@ -85,14 +85,17 @@ export class Storage {
      */
     onSettingsChange(key, handler) {
         chrome.storage.onChanged.addListener((changes) => {
-            const nv = changes.settings.newValue[key], ov = changes.settings.oldValue[key];
-            if ( JSON.stringify(nv) != JSON.stringify(ov) )
+            const nv = changes.settings.newValue?.[key];
+            const ov = changes.settings.oldValue?.[key];
+            if ( JSON.stringify(nv) !== JSON.stringify(ov) ) {
                 handler(nv, ov);
+            }
         });
     }
 
-    /** Private
-     * @return {SanitizerSettings} user settings
+    /**
+     * Get all settings
+     * @return {Promise} user settings
      */
     async loadSettings() {
         return new Promise((res, _) => {
