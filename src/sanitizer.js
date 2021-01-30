@@ -12,7 +12,8 @@
         company: '.post__title a',
         hub: '.hub-link',
         article: 'article',
-        notHiddenArticle: `article:not(.${hiddenArticleClassName})`,
+        visibleArticle: `article:not(.${hiddenArticleClassName})`,
+        hiddenArticle: `article.${hiddenArticleClassName}`,
     };
 
     /**
@@ -112,6 +113,22 @@
      */
     async function updateSettings(settings) {
         return new Promise((resolve) => chrome.storage.sync.set({ settings }, () => resolve()));
+    }
+
+    /**
+     * Gets all visible (not banned) articles
+     * @return {HtmlELement[]} Array of visible articles
+     */
+    function getVisibleArticles() {
+        return [...document.querySelectorAll(selectors.visibleArticle)];
+    }
+
+    /**
+     * Gets all hidden (banned) articles
+     * @return {HtmlELement[]} Array of hidden articles
+     */
+    function getHiddenArticles() {
+        return [...document.querySelectorAll(selectors.hiddenArticle)];
     }
 
     /**
@@ -224,7 +241,7 @@
 
         const searchTerm = keyword.toString().toLowerCase();
 
-        const articlesToBeDeleted = visibleArticles.filter(
+        const articlesToBeDeleted = getVisibleArticles().filter(
             (article) =>
                 belongsToAuthor(article, searchTerm) ||
                 belongsToBlog(article, searchTerm) ||
@@ -234,8 +251,6 @@
         log(`Found ${articlesToBeDeleted.length} articles to ban from ${searchTerm}`);
 
         articlesToBeDeleted.forEach((article) => {
-            visibleArticles.splice(visibleArticles.indexOf(article), 1);
-            hiddenArticles.push(article);
             if ( settings.isQuickActionsOn ) {
                 delQuickActionButtons(article);
             }
@@ -248,7 +263,7 @@
      * @param {string} searchTerm
      */
     function tryRestoreArticles(searchTerm) {
-        const articlesToBeRestored = hiddenArticles.filter(
+        const articlesToBeRestored = getHiddenArticles().filter(
             (article) =>
                 belongsToAuthor(article, searchTerm) ||
                 belongsToBlog(article, searchTerm) ||
@@ -258,8 +273,6 @@
         log(`Found ${articlesToBeRestored.length} articles to be restored for '${searchTerm}'`);
 
         articlesToBeRestored.forEach((article) => {
-            hiddenArticles.splice(hiddenArticles.indexOf(article), 1);
-            visibleArticles.push(article);
             if ( settings.isQuickActionsOn ) {
                 addQuickActionButtons(article);
             }
@@ -287,11 +300,7 @@
      * @param {object} newValue New value of setting
      */
     function onQuickActionsVisibilityChange(newValue) {
-        if ( newValue ) {
-            visibleArticles.forEach(addQuickActionButtons);
-        } else {
-            visibleArticles.forEach(delQuickActionButtons);
-        }
+        getVisibleArticles().forEach(newValue ? addQuickActionButtons : delQuickActionButtons);
         settings.isQuickActionsOn = newValue;
     }
 
@@ -321,11 +330,8 @@
     const banned = settings.banned.map(({ name }) => name);
     log(`Found list of banned users: ${banned.join(',')} `);
 
-    const [...visibleArticles] = document.querySelectorAll(selectors.article);
-    const hiddenArticles = [];
-
     banned.forEach(tryRemoveArticles);
-    settings.isQuickActionsOn && visibleArticles.forEach(addQuickActionButtons);
+    settings.isQuickActionsOn && getVisibleArticles().forEach(addQuickActionButtons);
     onSettingsChange('isQuickActionsOn', onQuickActionsVisibilityChange);
     onSettingsChange('banned', onBanListChange);
 
