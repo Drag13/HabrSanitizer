@@ -5,12 +5,15 @@
 
     const LOG = false;
     const DEFAULT_SETTINGS = { banned: [], isQuickActionsOn: false };
+    const hideHubButtonClassName = 'sanitizer-action-remove-hub';
+    const hiddenArticleClassName = 'sanitizer-hidden-article';
     const selectors = {
         author: '.user-info__nickname',
         company: '.post__title a',
         hub: '.hub-link',
         article: 'article',
-        notHiddenArticle: `article:not(.sanitizer-hidden-article)`,
+        visibleArticle: `article:not(.${hiddenArticleClassName})`,
+        hiddenArticle: `article.${hiddenArticleClassName}`,
     };
 
     /**
@@ -114,10 +117,18 @@
 
     /**
      * Gets all visible (not banned) articles
-     * @return {HtmlELement} List of visible articles
+     * @return {HtmlELement[]} Array of visible articles
      */
     function getVisibleArticles() {
-        return [...document.querySelectorAll(selectors.notHiddenArticle)];
+        return [...document.querySelectorAll(selectors.visibleArticle)];
+    }
+
+    /**
+     * Gets all hidden (banned) articles
+     * @return {HtmlELement[]} Array of hidden articles
+     */
+    function getHiddenArticles() {
+        return [...document.querySelectorAll(selectors.hiddenArticle)];
     }
 
     /**
@@ -146,7 +157,7 @@
             await updateSettings(settings);
         }
 
-        tryRemoveArticles(searchTerm, getVisibleArticles());
+        tryRemoveArticles(searchTerm);
     }
 
     /**
@@ -157,7 +168,7 @@
      */
     function createHideBtn(title, searchTerm) {
         const hideHubBtn = document.createElement('button');
-        hideHubBtn.className = 'sanitizer-action-remove-hub';
+        hideHubBtn.className = hideHubButtonClassName;
         hideHubBtn.title = title;
         hideHubBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 572.098 572.098">
         <path d="M99.187 398.999l44.333-44.332c-24.89-15.037-47.503-33.984-66.763-56.379 29.187-33.941 66.053-60.018 106.947-76.426-6.279 14.002-9.853 29.486-9.853 45.827 0 16.597 3.696 32.3 10.165 46.476l35.802-35.797c-5.698-5.594-9.248-13.36-9.248-21.977 0-17.02 13.801-30.82 30.82-30.82 8.611 0 16.383 3.55 21.971 9.248l32.534-32.534 36.635-36.628 18.366-18.373c-21.206-4.186-42.896-6.469-64.848-6.469-107.663 0-209.732 52.155-273.038 139.518L0 298.288l13.011 17.957c23.819 32.871 53.14 60.754 86.176 82.754zM459.208 188.998l-44.854 44.854c30.539 16.071 58.115 37.846 80.986 64.437-52.167 60.662-128.826 96.273-209.292 96.273-10.3 0-20.533-.6-30.661-1.744l-52.375 52.375c26.903 6.887 54.762 10.57 83.036 10.57 107.663 0 209.738-52.154 273.038-139.523l13.011-17.957-13.011-17.956c-27.063-37.332-61.242-68.177-99.878-91.329z"/>
@@ -211,11 +222,18 @@
     }
 
     /**
-     * Removes article from regular list by author name
-     * @param {string} keyword
-     * @param {HTMLElement[]} articles
+     * Delete action button from each hub link of article
+     * @param {HTMLElement} article
      */
-    function tryRemoveArticles(keyword, articles) {
+    function delQuickActionButtons(article) {
+        article.querySelectorAll(`.${hideHubButtonClassName}`).forEach(el => el.remove());
+    }
+
+    /**
+     * Hides article from site page by keyword
+     * @param {string} keyword
+     */
+    function tryRemoveArticles(keyword) {
         if (isEmpty(keyword)) {
             log(`Search term is null, ignoring`);
             return;
@@ -223,7 +241,7 @@
 
         const searchTerm = keyword.toString().toLowerCase();
 
-        const articlesToBeDeleted = articles.filter(
+        const articlesToBeDeleted = getVisibleArticles().filter(
             (article) =>
                 belongsToAuthor(article, searchTerm) ||
                 belongsToBlog(article, searchTerm) ||
@@ -232,7 +250,73 @@
 
         log(`Found ${articlesToBeDeleted.length} articles to ban from ${searchTerm}`);
 
-        articlesToBeDeleted.forEach((article) => article.classList.add('sanitizer-hidden-article'));
+        articlesToBeDeleted.forEach((article) => {
+            if ( settings.isQuickActionsOn ) {
+                delQuickActionButtons(article);
+            }
+            article.classList.add(hiddenArticleClassName);
+        });
+    }
+
+    /**
+     * Restores visibility of article on site page by keyword (search term)
+     * @param {string} searchTerm
+     */
+    function tryRestoreArticles(searchTerm) {
+        const articlesToBeRestored = getHiddenArticles().filter(
+            (article) =>
+                belongsToAuthor(article, searchTerm) ||
+                belongsToBlog(article, searchTerm) ||
+                belongsToHab(article, searchTerm)
+        );
+
+        log(`Found ${articlesToBeRestored.length} articles to be restored for '${searchTerm}'`);
+
+        articlesToBeRestored.forEach((article) => {
+            if ( settings.isQuickActionsOn ) {
+                addQuickActionButtons(article);
+            }
+            article.classList.remove(hiddenArticleClassName);
+        });
+    }
+
+    /**
+     * Subscribe to settings change event, watched by settings key
+     * @param {string} key
+     * @param {Function} handler
+     */
+    function onSettingsChange(key, handler) {
+        chrome.storage.onChanged.addListener((changes) => {
+            const nv = changes.settings.newValue?.[key];
+            const ov = changes.settings.oldValue?.[key];
+            if ( JSON.stringify(nv) !== JSON.stringify(ov) ) {
+                handler(nv, ov);
+            }
+        });
+    }
+
+    /**
+     * Reaction on switching isQuickActionsOn on options page
+     * @param {object} newValue New value of setting
+     */
+    function onQuickActionsVisibilityChange(newValue) {
+        getVisibleArticles().forEach(newValue ? addQuickActionButtons : delQuickActionButtons);
+        settings.isQuickActionsOn = newValue;
+    }
+
+    /**
+     * Reaction on changed ban list on options page
+     * @param {object} newValue New value of setting
+     * @param {object} oldValue Old value of setting
+     */
+    function onBanListChange(newValue, oldValue) {
+        const newList = newValue.filter(x => !x.disabled).map(x => x.name);
+        const oldList = oldValue.filter(x => !x.disabled).map(x => x.name);
+        const added = newList.filter(x => !oldList.includes(x));
+        const removed = oldList.filter(x => !newList.includes(x));
+        added.forEach(tryRemoveArticles);
+        removed.forEach(tryRestoreArticles);
+        settings.banned = newValue;
     }
 
     const isOnPersonalPage = onPersonalPage(window.location.href);
@@ -245,10 +329,11 @@
     const settings = await getSettings();
     const banned = settings.banned.map(({ name }) => name);
     log(`Found list of banned users: ${banned.join(',')} `);
-    const [...allArticles] = document.querySelectorAll(selectors.article);
 
-    banned.forEach((name) => tryRemoveArticles(name, allArticles));
+    banned.forEach(tryRemoveArticles);
     settings.isQuickActionsOn && getVisibleArticles().forEach(addQuickActionButtons);
+    onSettingsChange('isQuickActionsOn', onQuickActionsVisibilityChange);
+    onSettingsChange('banned', onBanListChange);
 
-    log(`Sanitization done`);
+    log('Sanitization done and inited for actions');
 })();

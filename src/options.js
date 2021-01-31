@@ -107,7 +107,7 @@ import { DnD } from './dragAndDrop.js';
         }
 
         $saveConfigBtn.addEventListener('click', async () => {
-            const settings = await store.getSettings();
+            const settings = await store.loadSettings();
             saveToFile(settings, 'habrasnitizer.json');
         });
     }
@@ -137,7 +137,7 @@ import { DnD } from './dragAndDrop.js';
 
     const storage = new Storage();
 
-    const settings = await storage.getSettings();
+    const settings = await storage.loadSettings();
 
     initBanForm(storage);
     initBanList(storage);
@@ -147,5 +147,5 @@ import { DnD } from './dragAndDrop.js';
 
     updateBanList(settings.banned);
 
-    storage.onChange((x) => updateBanList(x.banned));
+    storage.onSettingsChange('banned', updateBanList);
 })();
