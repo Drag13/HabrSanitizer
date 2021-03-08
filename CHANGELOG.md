@@ -1,5 +1,15 @@
 # HabroSanitizer - web extension to sanitize Habr.com from graphomaniac authors
 
+## [14.03.2021] V.2.6.0
+
+### Features
+
+* Added instant reaction on adding/removing items from banlist. Thanks @ximeric for the feature.
+
+### Bugs
+
+* Fixed bug [bug](https://github.com/Drag13/HabrSanitizer/issues/20) that caused hiding posts when the name of the company starts same as the blocked hub
+
 ## [11.01.2021] V.2.5.1
 
 ### Hotifx
