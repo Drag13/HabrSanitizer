@@ -77,9 +77,8 @@
      * @return {boolean}
      */
     function belongsToBlog(article, blogName) {
-        return article == null
-            ? false
-            : article.querySelector(selectors.company)?.href?.toLowerCase()?.includes(`/company/${blogName}`);
+        const href = article?.querySelector(selectors.company)?.href?.toLowerCase();
+        return href == null ? false : href.endsWith(`/company/${blogName}/`) || href.endsWith(`/company/${blogName}`);
     }
 
     /**
@@ -90,7 +89,10 @@
      */
     function belongsToHab(article, searchTerm) {
         return [...(article?.querySelectorAll(selectors.hub) ?? [])].some(
-            (el) => el.innerText?.toLowerCase() === searchTerm || el.href?.toLowerCase()?.includes(`/hub/${searchTerm}`)
+            (el) =>
+                el.innerText?.toLowerCase() === searchTerm ||
+                el.href?.toLowerCase()?.endsWith(`/hub/${searchTerm}`) ||
+                el.href?.toLowerCase()?.endsWith(`/hub/${searchTerm}/`)
         );
     }
 
@@ -226,7 +228,7 @@
      * @param {HTMLElement} article
      */
     function delQuickActionButtons(article) {
-        article.querySelectorAll(`.${hideHubButtonClassName}`).forEach(el => el.remove());
+        article.querySelectorAll(`.${hideHubButtonClassName}`).forEach((el) => el.remove());
     }
 
     /**
@@ -251,7 +253,7 @@
         log(`Found ${articlesToBeDeleted.length} articles to ban from ${searchTerm}`);
 
         articlesToBeDeleted.forEach((article) => {
-            if ( settings.isQuickActionsOn ) {
+            if (settings.isQuickActionsOn) {
                 delQuickActionButtons(article);
             }
             article.classList.add(hiddenArticleClassName);
@@ -273,7 +275,7 @@
         log(`Found ${articlesToBeRestored.length} articles to be restored for '${searchTerm}'`);
 
         articlesToBeRestored.forEach((article) => {
-            if ( settings.isQuickActionsOn ) {
+            if (settings.isQuickActionsOn) {
                 addQuickActionButtons(article);
             }
             article.classList.remove(hiddenArticleClassName);
@@ -289,7 +291,7 @@
         chrome.storage.onChanged.addListener((changes) => {
             const nv = changes.settings.newValue?.[key];
             const ov = changes.settings.oldValue?.[key];
-            if ( JSON.stringify(nv) !== JSON.stringify(ov) ) {
+            if (JSON.stringify(nv) !== JSON.stringify(ov)) {
                 handler(nv, ov);
             }
         });
@@ -310,10 +312,10 @@
      * @param {object} oldValue Old value of setting
      */
     function onBanListChange(newValue, oldValue) {
-        const newList = newValue.filter(x => !x.disabled).map(x => x.name);
-        const oldList = oldValue.filter(x => !x.disabled).map(x => x.name);
-        const added = newList.filter(x => !oldList.includes(x));
-        const removed = oldList.filter(x => !newList.includes(x));
+        const newList = newValue.filter((x) => !x.disabled).map((x) => x.name);
+        const oldList = oldValue.filter((x) => !x.disabled).map((x) => x.name);
+        const added = newList.filter((x) => !oldList.includes(x));
+        const removed = oldList.filter((x) => !newList.includes(x));
         added.forEach(tryRemoveArticles);
         removed.forEach(tryRestoreArticles);
         settings.banned = newValue;
