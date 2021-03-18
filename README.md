@@ -1,20 +1,20 @@
 # [HabrSanitizer](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc)
 
-Home for the Chrome and Firefox extension to sanitize Habr.com from graphomaniac authors. No external code, no tracking, 100% open source. [Free on Chrome Web Store](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc) or [FireFox Addons](https://addons.mozilla.org/uk/firefox/addon/habrosanitizer/)
+Home for the Chrome and Firefox extension to sanitize Habr.com from graphomaniac authors. No external code, no tracking, 100% open source. [Free on Chrome Web Store](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc) or [FireFox Addons](https://addons.mozilla.org/firefox/addon/habrosanitizer/)
 
 ![Settings page](https://raw.githubusercontent.com/Drag13/HabrSanitizer/master/docs/example.jpg)
 
 ## Install extension
 
 * To install the HabrSanitizer from Chrome Extensions Store - use this link: [Habrosanitizer](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc)
-* To install the HabrSanitizer from FireFox Addons - use this link: [Habrosanitizer](https://addons.mozilla.org/uk/firefox/addon/habrosanitizer/)
+* To install the HabrSanitizer from FireFox Addons - use this link: [Habrosanitizer](https://addons.mozilla.org/firefox/addon/habrosanitizer/)
 
 Or, follow next steps to be 100% sure that everything is safe:
 
 * Clone https://github.com/Drag13/HabrSanitizer
 * Open extensions tab:
   * Chrome: [chrome://extensions/](chrome://extensions/)
-  * Firefox: [about:addons](about:addons). You need [Firefox Developer Edition](https://www.mozilla.org/en-US/firefox/developer/) to install unsigned addons.
+  * Firefox: [about:addons](about:addons). You need [Firefox Developer Edition](https://www.mozilla.org/firefox/developer/) to install unsigned addons.
 * Enable developer mode toggle on the top-right corner
 * Click Load unpacked on the top-left corner and select SRC folder from the repo
 
