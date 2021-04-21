@@ -1,5 +1,11 @@
 # HabroSanitizer - web extension to sanitize Habr.com from graphomaniac authors
 
+## [21.04.2021] V.2.7.0
+
+### Features
+
+* Added experimental support for the Habr new deisgn (let's hope it work!)
+
 ## [14.03.2021] V.2.6.0
 
 ### Features
