@@ -9,8 +9,11 @@
     const hiddenArticleClassName = 'sanitizer-hidden-article';
     const selectors = {
         author: '.user-info__nickname',
+        authorNew: '.tm-user-info__username',
         company: '.post__title a',
-        hub: '.hub-link',
+        companyNew: '.tm-article-snippet__title-link',
+        hub: 'a.hub-link',
+        hubNew: '.tm-article-snippet__hubs-item-link span',
         article: 'article',
         visibleArticle: `article:not(.${hiddenArticleClassName})`,
         hiddenArticle: `article.${hiddenArticleClassName}`,
@@ -40,7 +43,7 @@
      * @return {boolean}
      */
     function equalsCaseInsensetive(v1, v2) {
-        return (v1 || '').toString().toLowerCase() === (v2 || '').toString().toLowerCase();
+        return (v1 || '').toString().toLowerCase().trim() === (v2 || '').toString().toLowerCase().trim();
     }
 
     /**
@@ -65,9 +68,27 @@
      * @return {boolean}
      */
     function belongsToAuthor(article, authorName) {
-        return article == null
-            ? false
-            : equalsCaseInsensetive(article.querySelector(selectors.author)?.textContent, authorName);
+        return article != null && (belongsToAuthorOld(article, authorName) || belongsToAuthorNew(article, authorName));
+    }
+
+    /**
+     * Checks if article belongs to particular user in the OLD design
+     * @param {HTMLElement} article
+     * @param {string} authorName name of the banned author
+     * @return {boolean}
+     */
+    function belongsToAuthorOld(article, authorName) {
+        return equalsCaseInsensetive(article.querySelector(selectors.author)?.textContent, authorName);
+    }
+
+    /**
+     * Checks if article belongs to particular user in the NEW design
+     * @param {HTMLElement} article
+     * @param {string} authorName name of the banned author
+     * @return {boolean}
+     */
+    function belongsToAuthorNew(article, authorName) {
+        return equalsCaseInsensetive(article.querySelector(selectors.authorNew)?.textContent, authorName);
     }
 
     /**
@@ -77,22 +98,65 @@
      * @return {boolean}
      */
     function belongsToBlog(article, blogName) {
-        const href = article?.querySelector(selectors.company)?.href?.toLowerCase();
+        return article != null && (belongsToBlogOld(article, blogName) || belongsToBlogNew(article, blogName));
+    }
+
+    /**
+     * Checks if article belongs to particular blog in the OLD design
+     * @param {HTMLElement} article
+     * @param {string} blogName Name of the blog
+     * @return {boolean}
+     */
+    function belongsToBlogOld(article, blogName) {
+        const href = article.querySelector(selectors.company)?.href?.toLowerCase();
         return href == null ? false : href.endsWith(`/company/${blogName}/`) || href.endsWith(`/company/${blogName}`);
     }
 
     /**
-     * Checks if article belongs to particular hub
+     * Checks if article belongs to particular blog in the NEW design
+     * @param {HTMLElement} article
+     * @param {string} blogName Name of the blog
+     * @return {boolean}
+     */
+    function belongsToBlogNew(article, blogName) {
+        const href = article.querySelector(selectors.companyNew)?.href?.toLowerCase();
+        return href == null ? false : href.includes(`/company/${blogName}`);
+    }
+
+    /**
+     * Checks if article belongs to particular hub in the OLD design
      * @param {HTMLElement} article
      * @param {string} searchTerm Name of the hub
      * @return {boolean}
      */
     function belongsToHab(article, searchTerm) {
-        return [...(article?.querySelectorAll(selectors.hub) ?? [])].some(
+        return article != null && (belongsToHabOld(article, searchTerm) || belongsToHabNew(article, searchTerm));
+    }
+
+    /**
+     * Checks if article belongs to particular hub in the OLD design
+     * @param {HTMLElement} article
+     * @param {string} searchTerm Name of the hub
+     * @return {boolean}
+     */
+    function belongsToHabOld(article, searchTerm) {
+        return [...article.querySelectorAll(selectors.hub)].some(
             (el) =>
-                el.innerText?.toLowerCase() === searchTerm ||
+                equalsCaseInsensetive(el.innerText, searchTerm) ||
                 el.href?.toLowerCase()?.endsWith(`/hub/${searchTerm}`) ||
                 el.href?.toLowerCase()?.endsWith(`/hub/${searchTerm}/`)
+        );
+    }
+
+    /**
+     * Checks if article belongs to particular hub in the NEW design
+     * @param {HTMLElement} article
+     * @param {string} searchTerm Name of the hub
+     * @return {boolean}
+     */
+    function belongsToHabNew(article, searchTerm) {
+        return [...article.querySelectorAll(selectors.hubNew)].some((el) =>
+            equalsCaseInsensetive(el.innerText, searchTerm)
         );
     }
 
@@ -187,7 +251,8 @@
      * @param {HTMLElement} article
      */
     function addHideHubQuickAction(article) {
-        article.querySelectorAll('a.hub-link').forEach((a) => {
+        const elements = [...article.querySelectorAll(selectors.hub), ...article.querySelectorAll(selectors.hubNew)];
+        elements.forEach((a) => {
             const searchTerm = a.innerText;
             if (isEmpty(searchTerm)) {
                 return;
@@ -203,7 +268,12 @@
      * @param {HTMLElement} article
      */
     function addHideAuthorQuickAction(article) {
-        article.querySelectorAll('.user-info__nickname').forEach((t) => {
+        const elements = [
+            ...article.querySelectorAll(selectors.author),
+            ...article.querySelectorAll(selectors.authorNew),
+        ];
+
+        elements.forEach((t) => {
             const searchTerm = t.innerText;
             if (isEmpty(searchTerm)) {
                 return;
