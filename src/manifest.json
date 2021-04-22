@@ -1,9 +1,9 @@
 {
     "manifest_version": 2,
     "author": "drag13",
-    "name": "HabroSanitizer",
-    "description": "This extension removes posts from chosen authors, blogs, or hubs on Habr.com (habrahabr). Free, no ads, no tracking, no telemetry.",
-    "version": "2.6.0",
+    "name": "HabroSanitizer for Habrahabr",
+    "description": "HabroSanitizer removes posts from the feed written by unwanted authors or companies on Habr.com (habrahabr). Free, no ads, no tracking, no telemetry.",
+    "version": "2.7.0",
     "permissions": ["storage"],
     "icons": {
         "16": "./asset/i16.png",
