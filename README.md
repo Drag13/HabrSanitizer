@@ -1,5 +1,8 @@
 # [HabrSanitizer](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc)
 
+![https://img.shields.io/chrome-web-store/rating/gnbmgdpmmddeegooghfhjlchocllcgpc?label=Chrome%20Rating](https://img.shields.io/chrome-web-store/rating/gnbmgdpmmddeegooghfhjlchocllcgpc?label=Chrome%20Rating)
+![https://img.shields.io/amo/rating/habrosanitizer?label=Mozilla%20Rating](https://img.shields.io/amo/rating/habrosanitizer?label=Mozilla%20Rating)
+
 Home for the Chrome and Firefox extension to sanitize Habr.com from graphomaniac authors. No external code, no tracking, 100% open source. [Free on Chrome Web Store](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc) or [FireFox Addons](https://addons.mozilla.org/firefox/addon/habrosanitizer/)
 
 ![Settings page](https://raw.githubusercontent.com/Drag13/HabrSanitizer/master/docs/example.jpg)
