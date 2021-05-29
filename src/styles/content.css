@@ -21,9 +21,16 @@
     max-width: 100%;
     min-width: 100%;
     pointer-events: none;
-    fill: darkorange;
+    fill: lightgrey;
+}
+
+h2 .sanitizer-action-remove-hub 
+{
+	position: absolute;
+	right: 1em;
 }
 
 .sanitizer-action-remove-hub:hover > svg {
     fill: red;
 }
+

@@ -3,6 +3,7 @@
 (async function () {
     ('use strict');
 
+    let alwaysRate = 1000000;
     const LOG = false;
     const DEFAULT_SETTINGS = { banned: [], isQuickActionsOn: false };
     const hideHubButtonClassName = 'sanitizer-action-remove-hub';
@@ -14,6 +15,7 @@
         companyNew: '.tm-article-snippet__title-link',
         hub: 'a.hub-link',
         hubNew: '.tm-article-snippet__hubs-item-link span',
+	postTitle: 'a.post__title_link',
         article: 'article',
         visibleArticle: `article:not(.${hiddenArticleClassName})`,
         hiddenArticle: `article.${hiddenArticleClassName}`,
@@ -62,13 +64,24 @@
     }
 
     /**
+     * Checks if article wqas closed
+     * @param {HTMLElement} article
+     * @param {string} id of the closed article
+     * @return {boolean}
+     */
+    function equalsId(article, id) {
+        return article != null && id.indexOf('#') == 0 && ('#' + article.closest('li.content-list__item')?.id) == id;
+    }
+
+
+    /**
      * Checks if article belongs to particular user
      * @param {HTMLElement} article
      * @param {string} authorName name of the banned author
      * @return {boolean}
      */
     function belongsToAuthor(article, authorName) {
-        return article != null && (belongsToAuthorOld(article, authorName) || belongsToAuthorNew(article, authorName));
+        return article != null && article.articleRate < alwaysRate & (belongsToAuthorOld(article, authorName) || belongsToAuthorNew(article, authorName));
     }
 
     /**
@@ -98,7 +111,7 @@
      * @return {boolean}
      */
     function belongsToBlog(article, blogName) {
-        return article != null && (belongsToBlogOld(article, blogName) || belongsToBlogNew(article, blogName));
+        return article != null && article.articleRate < alwaysRate && (belongsToBlogOld(article, blogName) || belongsToBlogNew(article, blogName));
     }
 
     /**
@@ -130,7 +143,7 @@
      * @return {boolean}
      */
     function belongsToHab(article, searchTerm) {
-        return article != null && (belongsToHabOld(article, searchTerm) || belongsToHabNew(article, searchTerm));
+        return article != null && article.articleRate < alwaysRate && (belongsToHabOld(article, searchTerm) || belongsToHabNew(article, searchTerm));
     }
 
     /**
@@ -186,7 +199,7 @@
      * @return {HtmlELement[]} Array of visible articles
      */
     function getVisibleArticles() {
-        return [...document.querySelectorAll(selectors.visibleArticle)];
+        return [...document.querySelectorAll(selectors.visibleArticle)].map((s) => { s.articleRate = parseInt( s.querySelector('.post-stats__result-counter')?.innerText?.replace(String.fromCharCode(8211), '-') ?? '0'); return s; } );
     }
 
     /**
@@ -214,14 +227,35 @@
         }
 
         const searchTerm = rawSearchTerm.toLowerCase();
+
         const settings = await getSettings();
 
-        const alreadyBanned = settings.banned.find((x) => equalsCaseInsensetive(x.name, searchTerm)); // in case of different pages
+	// close article
+	if(searchTerm.indexOf('#') == 0)
+	{
+		if(!settings.closed)
+			settings.closed = [];
 
-        if (!alreadyBanned) {
-            settings.banned.push({ name: searchTerm, disabled: false });
-            await updateSettings(settings);
-        }
+        	const alreadyClosed = settings.closed.find((x) => equalsCaseInsensetive(x.name, searchTerm)); // in case of different pages
+
+        	if (!alreadyClosed) {
+			
+			if(settings.closed.length > 100)			
+				settings.closed.splice(0, 1);
+
+            		settings.closed.push({ name: searchTerm, disabled: false });
+            		await updateSettings(settings);
+        	}
+	}
+	else
+	{
+        	const alreadyBanned = settings.banned.find((x) => equalsCaseInsensetive(x.name, searchTerm)); // in case of different pages
+
+	        if (!alreadyBanned) {
+	            settings.banned.push({ name: searchTerm, disabled: false });
+        	    await updateSettings(settings);
+	        }
+	}
 
         tryRemoveArticles(searchTerm);
     }
@@ -246,6 +280,7 @@
         return hideHubBtn;
     }
 
+
     /**
      * Add quick action to hide hub
      * @param {HTMLElement} article
@@ -262,6 +297,20 @@
             a.insertAdjacentElement('afterend', hideHubBtn);
         });
     }
+
+    /**
+     * Add quick action to hide an article
+     * @param {HTMLElement} article
+     */
+    function addHideArticleQuickAction(article) {
+        const elements = [...article.querySelectorAll(selectors.postTitle)];
+        elements.forEach((a) => {
+
+            const hideArticleBtn = createHideBtn('Hide this arcitle', '#' + a.closest('li.content-list__item').id, hideBtnHandler);
+            a.insertAdjacentElement('afterend', hideArticleBtn);
+        });
+    }
+
 
     /**
      *
@@ -291,6 +340,7 @@
     function addQuickActionButtons(article) {
         addHideHubQuickAction(article);
         addHideAuthorQuickAction(article);
+	addHideArticleQuickAction(article);
     }
 
     /**
@@ -315,6 +365,7 @@
 
         const articlesToBeDeleted = getVisibleArticles().filter(
             (article) =>
+                equalsId(article, searchTerm) ||
                 belongsToAuthor(article, searchTerm) ||
                 belongsToBlog(article, searchTerm) ||
                 belongsToHab(article, searchTerm)
@@ -326,7 +377,7 @@
             if (settings.isQuickActionsOn) {
                 delQuickActionButtons(article);
             }
-            article.classList.add(hiddenArticleClassName);
+            (article.closest('li.content-list__item') ?? article).classList.add(hiddenArticleClassName);
         });
     }
 
@@ -400,12 +451,39 @@
 
     const settings = await getSettings();
     const banned = settings.banned.map(({ name }) => name);
+
     log(`Found list of banned users: ${banned.join(',')} `);
 
-    banned.forEach(tryRemoveArticles);
-    settings.isQuickActionsOn && getVisibleArticles().forEach(addQuickActionButtons);
+    const closed = (settings.closed ?? []).map(({ name }) => name);
+    alwaysRate = settings.rate ?? 1000000;
+
+    log(`Found list of closed articles: ${banned.join(',')} `);
+
+    [...banned, ...closed].forEach(tryRemoveArticles);
+
+    getVisibleArticles().forEach(settings.isQuickActionsOn ? addQuickActionButtons : addHideArticleQuickAction);
     onSettingsChange('isQuickActionsOn', onQuickActionsVisibilityChange);
     onSettingsChange('banned', onBanListChange);
+
+    // execute custom js from settings
+    if(settings.js && settings.js.trim().length > 0)
+    {
+	var script = document.createElement("script");
+	script.type="text/javascript";
+	script.innerHTML = settings.js;
+	document.getElementsByTagName('head')[0].appendChild(script);
+    }
+
+    // insert ustom css from settings
+    if(settings.css && settings.css.trim().length > 0)
+    {
+	var style = document.createElement("style");
+	style.type="text/css";
+	style.innerHTML = settings.css;
+	document.getElementsByTagName('head')[0].appendChild(style);
+    }
+    
+
 
     log('Sanitization done and inited for actions');
 })();

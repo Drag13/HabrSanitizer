@@ -172,3 +172,7 @@ body {
     margin: 1em 0;
     padding: 1em;
 }
+
+#custom-javascript, #custom-css { height: 6em; width: 100%; }
+
+#save-custom-css, #save-custom-javascript { display: inline-block; }
