@@ -79,6 +79,17 @@ export class Storage {
     }
 
     /**
+     * Update and save list view mode
+     * @param {integer} mode
+     * @return {Promise} promise
+     */
+    async setListViewMode(mode) {
+        const settings = await this.loadSettings();
+        settings.listViewMode = mode;
+        return this._saveSettings(settings);
+    }
+
+    /**
      * Subscribe to settings change event, watched by settings key
      * @param {string} key
      * @param {Function} handler
