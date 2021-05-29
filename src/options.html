@@ -94,6 +94,24 @@
                 </section>
 
                 <section class="content-options-section">
+                    Always show arctiles with rating more than
+                    <form class="content-options-form" autocomplete="off">
+                        <div>
+                            <select id="always-rate">
+					<option value="1000000">[no rate option]</option>
+					<option value="0">0</option>
+					<option value="5">+5</option>
+					<option value="10">+10</option>
+					<option value="15">+15</option>
+					<option value="20">+20</option>
+					<option value="25">+25</option>
+					<option value="50">+50</option>
+				</select>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="content-options-section">
                     User interface options
                     <form class="content-options-form" autocomplete="off">
                         <div>
@@ -101,6 +119,53 @@
                             <label for="quick-actions-toggler" title="Enables hide icon on the site"
                                 >Show quick actions</label
                             >
+                        </div>
+                    </form>
+                </section>
+
+                <section class="content-options-section">
+                    Custom JavaScript
+			<button class="btn " id="save-custom-javascript">
+                                <svg
+                                    width="20px"
+                                    height="20px"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2px"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <use xlink:href="./asset/sprites.svg#save" />
+                                </svg>
+                            </button>
+
+                    <form class="content-options-form" autocomplete="off">
+                        <div>
+				<textarea id="custom-javascript"></textarea>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="content-options-section">
+                    Custom CSS 
+
+			<button class="btn " id="save-custom-css">
+                                <svg
+                                    width="20px"
+                                    height="20px"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2px"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <use xlink:href="./asset/sprites.svg#save" />
+                                </svg>
+                            </button>
+
+                    <form class="content-options-form" autocomplete="off">
+                        <div>
+				<textarea id="custom-css"></textarea>
                         </div>
                     </form>
                 </section>

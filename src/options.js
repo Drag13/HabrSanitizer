@@ -52,6 +52,21 @@ import { DnD } from './dragAndDrop.js';
         $bans.innerHTML = banList;
     }
 
+
+    /**
+     * @param {Storage} store
+     */
+    function initCustom(store, settings) {
+	document.querySelector('#custom-javascript').value = settings.js ?? '';
+	document.querySelector('#custom-css').value = settings.css ?? '';
+
+        document.querySelector('#save-custom-javascript').addEventListener('click', (e) => store.saveCustomJavaScript(document.querySelector('#custom-javascript').value));
+        document.querySelector('#save-custom-css').addEventListener('click', (e) => store.saveCustomCss(document.querySelector('#custom-css').value));
+
+	document.querySelector('#always-rate').value = settings.rate ?? 1000000;
+        document.querySelector('#always-rate').addEventListener('change', (e) => store.saveAlwaysRate(document.querySelector('#always-rate').value));
+    }
+
     /**
      * @param {Storage} store
      */
@@ -144,6 +159,7 @@ import { DnD } from './dragAndDrop.js';
     initDnD(storage);
     initQuickActions(storage);
     initSaveConfigBtn(storage);
+    initCustom(storage, settings);
 
     updateBanList(settings.banned);
 

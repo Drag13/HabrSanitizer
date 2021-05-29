@@ -78,6 +78,36 @@ export class Storage {
         return this._saveSettings(settings);
     }
 
+     /**
+     * Update and save rate for articles 
+     * @param {number} value of the rate
+     */
+    async saveAlwaysRate(rate) {
+        const settings = await this.loadSettings();
+        settings.rate = rate;
+        return this._saveSettings(settings);
+    }
+
+    /**
+     * Update and save custom javascript
+     * @param {string} js is text of custom javascript
+     */
+    async saveCustomJavaScript(js) {
+        const settings = await this.loadSettings();
+        settings.js = js;
+        return this._saveSettings(settings);
+    }
+
+    /**
+     * Update and save custom css
+     * @param {string} css is text of custom css
+     */
+    async saveCustomCss(css) {
+        const settings = await this.loadSettings();
+        settings.css = css;
+        return this._saveSettings(settings);
+    }
+
     /**
      * Subscribe to settings change event, watched by settings key
      * @param {string} key
