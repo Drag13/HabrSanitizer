@@ -1,9 +1,12 @@
 /** @typedef {{banned:Array<{name:string, disabled: boolean}>,isQuickActionsOn: boolean}} SanitizerSettings */
 
-(async function () {
+/**
+ * Removes unwanted posts and create quick action buttons
+ */
+async function sanitize() {
     ('use strict');
 
-    const LOG = false;
+    const LOG = true;
     const DEFAULT_SETTINGS = { banned: [], isQuickActionsOn: false };
     const hideHubButtonClassName = 'sanitizer-action-remove-hub';
     const hiddenArticleClassName = 'sanitizer-hidden-article';
@@ -408,4 +411,9 @@
     onSettingsChange('banned', onBanListChange);
 
     log('Sanitization done and inited for actions');
-})();
+}
+
+// Habr's new design re-renders the articles after being loaded and restores removed
+// Let's try the simplest fix and give a bit of time before we start sanitizing
+// Next step should be mutation observer
+setTimeout(sanitize, 100);
