@@ -1,5 +1,15 @@
 # HabroSanitizer - web extension to sanitize Habr.com from graphomaniac authors
 
+## [23.08.2021] V.2.7.2
+
+* Fixed possibility to interact with asterisk behind the hub name
+
+## [23.08.2021] V.2.7.1
+
+### Bugs
+
+* Added workaround to fix issue when removed content regenrated because of SSR
+
 ## [21.04.2021] V.2.7.0
 
 ### Features
