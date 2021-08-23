@@ -6,7 +6,7 @@
 async function sanitize() {
     ('use strict');
 
-    const LOG = true;
+    const LOG = false;
     const DEFAULT_SETTINGS = { banned: [], isQuickActionsOn: false };
     const hideHubButtonClassName = 'sanitizer-action-remove-hub';
     const hiddenArticleClassName = 'sanitizer-hidden-article';
@@ -16,7 +16,7 @@ async function sanitize() {
         company: '.post__title a',
         companyNew: '.tm-article-snippet__title-link',
         hub: 'a.hub-link',
-        hubNew: '.tm-article-snippet__hubs-item-link span',
+        hubNew: '.tm-article-snippet__hubs-item-link span:first-child',
         article: 'article',
         visibleArticle: `article:not(.${hiddenArticleClassName})`,
         hiddenArticle: `article.${hiddenArticleClassName}`,
