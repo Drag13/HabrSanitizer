@@ -3,7 +3,7 @@
     "author": "drag13",
     "name": "HabroSanitizer for Habrahabr",
     "description": "HabroSanitizer hides posts in the feed written by unwanted authors or companies on Habr.com (habrahabr). Free, no ads, no telemetry.",
-    "version": "2.7.2",
+    "version": "2.7.3",
     "permissions": ["storage"],
     "icons": {
         "16": "./asset/i16.png",

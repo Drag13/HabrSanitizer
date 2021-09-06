@@ -17,8 +17,8 @@ async function sanitize() {
         companyNew: '.tm-article-snippet__title-link',
         hub: 'a.hub-link',
         hubNew: '.tm-article-snippet__hubs-item-link span:first-child',
-        article: 'article',
-        visibleArticle: `article:not(.${hiddenArticleClassName})`,
+        article: 'article:not(.tm-comment-thread__comment)',
+        visibleArticle: `article:not(.tm-comment-thread__comment):not(.${hiddenArticleClassName})`,
         hiddenArticle: `article.${hiddenArticleClassName}`,
     };
 
