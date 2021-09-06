@@ -1,5 +1,9 @@
 # HabroSanitizer - web extension to sanitize Habr.com from graphomaniac authors
 
+## [06.09.2021] V.2.7.3
+
+* Fixed rare issue when show/hide icon appeared on the comment thread - #27
+
 ## [23.08.2021] V.2.7.2
 
 * Fixed possibility to interact with asterisk behind the hub name
