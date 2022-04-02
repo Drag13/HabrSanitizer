@@ -1,5 +1,7 @@
 # [HabrSanitizer](https://chrome.google.com/webstore/detail/habrosanitizer/gnbmgdpmmddeegooghfhjlchocllcgpc)
 
+[![StandsWithUkraine](https://raw.githubusercontent.com/Drag13/drag13.github.io/development/swu.PNG)](https://savelife.in.ua/en/donate/)
+
 ![https://img.shields.io/chrome-web-store/rating/gnbmgdpmmddeegooghfhjlchocllcgpc?label=Chrome%20Rating](https://img.shields.io/chrome-web-store/rating/gnbmgdpmmddeegooghfhjlchocllcgpc?label=Chrome%20Rating)
 ![https://img.shields.io/amo/rating/habrosanitizer?label=Mozilla%20Rating](https://img.shields.io/amo/rating/habrosanitizer?label=Mozilla%20Rating)
 
