@@ -32,7 +32,7 @@ function checkRegenrationRuntime(pathToFile) {
 }
 
 /**
- * Removes specefied folder
+ * Removes specified folder
  * @param {string} output Path to folder to clean
  */
 function cleanup(output) {
