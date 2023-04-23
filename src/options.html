@@ -45,10 +45,63 @@
                     </form>
                 </section>
 
-                <section class="ban-list-info">Ban list</section>
+                <section class="ban-list-info">
+                    <span>Ban list</span>
+                    <span class="ban-list-info-buttons">
+                        List view mode:
+                        <div class="custom-control-radio" title="Single column list">
+                            <input type="radio" name="ban-grid-mode" value="single" id="list-mode-grid-single"/>
+                            <label for="list-mode-grid-single">
+                                <svg
+                                    width="20px"
+                                    height="20px"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2px"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <use xlink:href="./asset/sprites.svg#list" />
+                                </svg>
+                            </label>
+                        </div>
+                        <div class="custom-control-radio" title="Grid by rows">
+                            <input type="radio" name="ban-grid-mode" value="rows" id="list-mode-grid-rows">
+                            <label for="list-mode-grid-rows">
+                                <svg
+                                    width="20px"
+                                    height="20px"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2px"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <use xlink:href="./asset/sprites.svg#grid-rows" />
+                                </svg>
+                            </label>
+                        </div>
+                        <div class="custom-control-radio" title="Grid by columns" id="div-list-mode-grid-columns">
+                            <input type="radio" name="ban-grid-mode" value="columns" id="list-mode-grid-columns">
+                            <label for="list-mode-grid-columns">
+                                <svg
+                                    width="20px"
+                                    height="20px"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2px"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <use xlink:href="./asset/sprites.svg#grid-columns" />
+                                </svg>
+                            </label>
+                        </div>
+                    </span>
+                </section>
 
                 <section class="ban-list-section">
-                    <ul class="ban-list"></ul>
+                    <div class="ban-list"></div>
                 </section>
 
                 <section class="json-section">

@@ -18,10 +18,13 @@ import { DnD } from './dragAndDrop.js';
             return ``;
         }
 
+        document.documentElement.style.setProperty('--grid-num-items', banned.length);
+
         return banned
-            .map(
-                ({ name }) =>
-                    `<li>
+            .map(({ name }) => name) // creating a new array for sorting
+            .sort((a, b) => a.localeCompare(b)) // 'sort' method modifies input array
+            .map((name) =>
+                    `<div>
                     <span class="lbl">${name}</span>
                     <button class="btn round" data-author-name="${name}">
                     <svg width="20px"
@@ -36,9 +39,8 @@ import { DnD } from './dragAndDrop.js';
                         <use xlink:href="./asset/sprites.svg#minus"/>
                     </svg>
                     </button>
-                    </li>`
+                    </div>`
             )
-            .reverse()
             .join('');
     }
 
@@ -97,6 +99,45 @@ import { DnD } from './dragAndDrop.js';
     }
 
     /**
+     * Initialize list view mode controls
+     * @param {Storage} store
+     */
+    function initBanListViewMode(store) {
+        const $banList = document.querySelector('.ban-list');
+
+        document.getElementById('list-mode-grid-single').addEventListener('click', (e) => {
+            $banList.classList.remove('ban-list-grid', 'ban-list-grid-columns');
+            store.setListViewMode(e.target.value);
+        });
+
+        document.getElementById('list-mode-grid-rows').addEventListener('click', (e) => {
+            $banList.classList.remove('ban-list-grid-columns');
+            $banList.classList.add('ban-list-grid');
+            store.setListViewMode(e.target.value);
+        });
+
+        document.getElementById('list-mode-grid-columns').addEventListener('click', (e) => {
+            $banList.classList.add('ban-list-grid', 'ban-list-grid-columns');
+            store.setListViewMode(e.target.value);
+        });
+
+        let cbIndex;
+        switch (settings.listViewMode) {
+            case 'rows':
+                $banList.classList.add('ban-list-grid');
+                cbIndex = 1;
+                break;
+            case 'columns':
+                $banList.classList.add('ban-list-grid', 'ban-list-grid-columns');
+                cbIndex = 2;
+                break;
+            default:
+                cbIndex = 0;
+        }
+        document.getElementsByName('ban-grid-mode')[cbIndex].checked = true;
+    }
+
+    /**
      * @param {Storage} store
      */
     function initSaveConfigBtn(store) {
@@ -141,6 +182,7 @@ import { DnD } from './dragAndDrop.js';
 
     initBanForm(storage);
     initBanList(storage);
+    initBanListViewMode(storage);
     initDnD(storage);
     initQuickActions(storage);
     initSaveConfigBtn(storage);

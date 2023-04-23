@@ -18,11 +18,27 @@
     --max-width: 1024px;
     --button-text: var(--primary-color);
     --input-height: 2em;
+    --grid-num-items: 50;
+    --grid-num-columns: 3;
+    --grid-cell-width: 15em;
+    --grid-cell-height: 2.5em;
 }
 
 @media only screen and (max-width: 1600px) {
     :root {
         --max-width: 800px;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    :root {
+        --grid-num-columns: 2;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    :root {
+        --grid-num-columns: 1;
     }
 }
 
@@ -92,30 +108,54 @@ body {
     padding: 2em 1.6em 1em 1.6em;
     background-color: var(--dark-light);
     color: var(--lighter);
+    display: flex;
+    align-items: center;
+}
+
+.ban-list-info-buttons {
+    align-items: center;
+    display: flex;
+    margin-left: auto;
 }
 
 .ban-list-section {
     background-color: var(--dark-light);
 }
 
-.ban-list-section li {
-    list-style: none;
+.ban-list > div {
     display: flex;
     align-items: center;
     background-color: var(--dark-light);
     padding: 0.6em 1.6em 0.6em 1.6em;
 }
 
-.ban-list-section li:nth-child(odd) {
+.ban-list-grid > div {
+    border: thin solid;
+    justify-content: space-between;
+    padding: 2px;
+}
+
+.ban-list > div:nth-child(odd) {
     background-color: var(--dark-light-07);
 }
 
-.ban-list-section li .lbl {
+.ban-list-section .lbl {
     font-family: 'Courier New', Courier, monospace;
-    font-size: 1.5em;
     color: var(--lighter);
     line-height: 1em;
     padding-right: 0.3em;
+}
+
+.ban-list-grid {
+    display: grid;
+    grid-gap: 1em 0.4em;
+    grid-template-columns: repeat(auto-fit, minmax(var(--grid-cell-width), 1fr));
+}
+
+.ban-list-grid-columns {
+    grid-auto-flow: column;
+    grid-template-rows: repeat(calc(var(--grid-num-items) / var(--grid-num-columns)), var(--grid-cell-height));
+    grid-gap: 0.4em 1em;
 }
 
 .json-section {
@@ -171,4 +211,32 @@ body {
     background-color: var(--dark-light);
     margin: 1em 0;
     padding: 1em;
+}
+
+.custom-control-radio {
+    margin-left: 0.4em;
+}
+
+.custom-control-radio input {
+    display: none;
+}
+
+.custom-control-radio input + label {
+    padding: 0.7em 0.5em 0;
+}
+
+.custom-control-radio input:checked + label {
+    background-color: var(--dark-light-07);
+    border: solid thin;
+}
+
+.custom-control-radio label:hover {
+    background-color: var(--dark-light-07);
+}
+
+@supports not ( -moz-appearance:none ){
+    /* Chromium can't calc integer division: see https://bugs.chromium.org/p/chromium/issues/detail?id=931216 */
+    #div-list-mode-grid-columns {
+        display: none;
+    }
 }
